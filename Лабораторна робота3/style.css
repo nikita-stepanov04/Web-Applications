@@ -1,0 +1,21 @@
+.side-link {
+    text-decoration: none;
+    color: rgb(33, 33, 33); 
+    transition: 0.15s;   
+}
+
+.side-link:hover {
+    font-size:larger;
+    color: rgb(62, 62, 62)
+}
+
+.dishes-card {
+    width: 90%;
+    margin-left: 5%;
+    transition: 0.2s;
+}
+
+.dishes-card:hover {
+    width: 100%;
+    margin: 0;
+}
