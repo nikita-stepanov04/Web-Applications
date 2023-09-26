@@ -19,3 +19,13 @@
     width: 100%;
     margin: 0;
 }
+
+.flip {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+.flip:hover {
+    transform: rotateY(180deg);
+    transition: transform 0.7s ease;
+}
