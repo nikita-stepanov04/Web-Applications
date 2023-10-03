@@ -64,11 +64,29 @@ footer {
     100% { transform: rotateY(180deg); }    
 }
 
+.bg-lightblue {
+    background-color: lightblue;
+}
+
+.main-block {
+    background-color: rgb(248,249,250);
+    padding: 1rem;
+    margin: 4rem 0;
+    border-radius: 1rem;
+}
+
 @media (max-width: 768px) {
     .sidebar { padding-top: 0; }
-    .sidebar h3 { display: none; }
 
+    .sidebar h3,
     .on-mobile-hidden { display: none; }
+
+    .login-form { margin-top: 12rem; }
+
+    .dishes-card {
+        width: 100%;
+        margin-left: 0;
+    }
 
     .sidebar-item:hover,
     .dishes-card:hover,
