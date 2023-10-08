@@ -1,0 +1,13 @@
+.chat-container {
+    height: 90vh;    
+    overflow-y: scroll;
+    background-color: white;
+}
+
+.message {
+    background: rgb(218, 246, 255);
+    border-radius: 1rem;
+    padding: 0.4rem 1.2rem;
+    margin-top: 1rem;
+    overflow-wrap: break-word;
+}
