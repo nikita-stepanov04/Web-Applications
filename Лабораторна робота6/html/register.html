@@ -123,6 +123,7 @@
                 <table class="table table-striped" id="registrants">
                     <thead>
                         <tr>
+                            <th></th>
                             <th>#</th>
                             <th>Name</th>
                             <th>Surname</th>
@@ -137,6 +138,18 @@
                     </thead>
                     <tbody></tbody>
                 </table>
+                <div class="row my-2">
+                    <div class="col-3 offset-3">
+                        <div class="d-grid">
+                            <button class="btn btn-primary" onclick="cloneRegistrant()">Clone</button>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="d-grid">
+                            <button class="btn btn-danger" onclick="deleteRegistrant()">Delete</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
