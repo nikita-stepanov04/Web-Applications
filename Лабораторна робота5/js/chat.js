@@ -9,7 +9,7 @@ document.querySelectorAll(".user")
 
         const messageDiv = document.createElement('div');
         messageDiv.classList.add("col-8", "message");
-        if (event.target.id == 'user2') {
+        if (event.target.id === 'user2') {
             messageDiv.classList.add('offset-4');
             messageDiv.classList.add('text-end');
         }

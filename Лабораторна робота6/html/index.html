@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <title>Restaurant</title>
+</head>
+<body>
+    <div class="page">
+                    
+        <!-- header -->
+        <header>
+            <nav class="navbar navbar-expand-lg bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand h1" href="#">
+                        <img src="../img/logo.png" width="30" height="30" alt="logo" class="d-inline-block align-text-top">
+                        Restaurant
+                    </a>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search for dishes" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </nav>
+        </header>      
+
+        <!-- main content -->
+        <div class="row m-2 ">
+
+            <!-- sidebar -->
+            <div class="col-lg-3 col-md-3 col-sm-12 sidebar">
+
+                <h3 class="on-mobile-hidden">Dishes</h3>
+                <ul>
+                    <li>
+                        <div class="sidebar-item">
+                            <a class="main-link">Soups</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="sidebar-item">
+                            <a class="main-link">Pizzas</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="sidebar-item">
+                            <a class="main-link">Burgers</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="sidebar-item">
+                            <a class="main-link">Salads</a>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="on-mobile-hidden mt-5">
+                    <h3>Info</h3>
+                    <ul>
+                        <li>
+                            <div class="sidebar-item">
+                                <i class="fa-solid fa-user me-3"></i>
+                                <a class="main-link" href="login.html">My account</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="sidebar-item">
+                                <i class="fa-solid fa-cart-shopping me-3"></i>
+                                <a class="main-link" href="cart.html">My orders</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="sidebar-item">
+                                <i class="fa-solid fa-address-book me-3"></i>
+                                <a class="main-link" href="contacts.html">Contacts</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="sidebar-item">
+                                <i class="fa-solid fa-circle-info me-3"></i>
+                                <a class="main-link" href="faq.html">FAQ</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="sidebar-item">
+                                <i class="fa-solid fa-calendar-days me-3"></i>
+                                <a class="main-link" href="schedule.html">Schedule</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- dishes cards -->
+            <div class="col-lg-9 col-md-9 col-sm-12">
+                <h3 class="text-center my-2">Choose your dishes</h3>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                        <div class="card dishes-card">
+                            <a href="#" class="main-link">
+                                <img src="../img/pizza-1.jpg" class="card-img-top">
+                                <div class="card-body">                            
+                                    <div class="d-flex">
+                                        <div class="p-2 card-text flex-grow-1">First pizza</div>                                
+                                        <form action="#">
+                                            <button type="submit" class="btn btn-outline-primary">
+                                                ₴ 45.00
+                                                <i class="fa-solid fa-cart-shopping"></i>
+                                            </button>
+                                        </form>                                
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                        <div class="card dishes-card">
+                            <a href="#" class="main-link">
+                                <img src="../img/pizza-2.jpg" class="card-img-top">
+                                <div class="card-body">                            
+                                    <div class="d-flex">
+                                        <div class="p-2 card-text flex-grow-1">Second pizza</div>                                
+                                        <form action="#">
+                                            <button type="submit" class="btn btn-outline-primary">
+                                                ₴ 65.00
+                                                <i class="fa-solid fa-cart-shopping"></i>
+                                            </button>
+                                        </form>                                
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                        <div class="card dishes-card">
+                            <a href="#" class="main-link">
+                                <img src="../img/burger-1.jpg" class="card-img-top">
+                                <div class="card-body">                            
+                                    <div class="d-flex">
+                                        <div class="p-2 card-text flex-grow-1">First burger</div>                                
+                                        <form action="#">
+                                            <button type="submit" class="btn btn-outline-primary">
+                                                ₴ 45.00
+                                                <i class="fa-solid fa-cart-shopping"></i>
+                                            </button>
+                                        </form>                                
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                        <div class="card dishes-card">
+                            <a href="#" class="main-link">
+                                <img src="../img/burger-2.jpg" class="card-img-top">
+                                <div class="card-body">                            
+                                    <div class="d-flex">
+                                        <div class="p-2 card-text flex-grow-1">Second burger</div>                                
+                                        <form action="#">
+                                            <button type="submit" class="btn btn-outline-primary">
+                                                ₴ 55.00
+                                                <i class="fa-solid fa-cart-shopping"></i>
+                                            </button>
+                                        </form>                                
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                        <div class="card dishes-card">
+                            <a href="#" class="main-link">
+                                <img src="../img/soup-1.jpg" class="card-img-top">
+                                <div class="card-body">                            
+                                    <div class="d-flex">
+                                        <div class="p-2 card-text flex-grow-1">First soup</div>                                
+                                        <form action="#">
+                                            <button type="submit" class="btn btn-outline-primary">
+                                                ₴ 70.00
+                                                <i class="fa-solid fa-cart-shopping"></i>
+                                            </button>
+                                        </form>                                
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                        <div class="card dishes-card">
+                            <a href="#" class="main-link">
+                                <img src="../img/soup-2.jpg" class="card-img-top">
+                                <div class="card-body">                            
+                                    <div class="d-flex">
+                                        <div class="p-2 card-text flex-grow-1">Second soup</div>                                
+                                        <form action="#">
+                                            <button type="submit" class="btn btn-outline-primary">
+                                                ₴ 65.00
+                                                <i class="fa-solid fa-cart-shopping"></i>
+                                            </button>
+                                        </form>                                
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- pagination -->
+            <div class="d-flex justify-content-center mt-4">
+                <nav aria-label="...">
+                    <ul class="pagination pagination-md">
+                        <li class="page-item active" aria-current="page">
+                        <span class="page-link">1</span>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    </ul>
+                </nav>
+            </div>
+            
+        </div>
+
+        <!-- footer -->
+        <footer class="bg-light py-2">
+            <div class="text-center">
+                <h3>Restaurant</h3>
+                <p>Adress: Kuiv, Shevchenka str. 15<p>      
+                <div class="contacts">
+                    <a class="fa-brands fa-telegram" href=""></a>
+                    <a class="fa-solid fa-phone" href="tel:+380777777777"></a>
+                    <a class="fa-regular fa-envelope" href="mailto:mailcafe@gmail.com"></a>
+                    <a class="fa-brands fa-viber" href=""></a>
+                </div>
+            </div>      
+        </footer>
+    </div>
+    <script src="https://kit.fontawesome.com/7b30313ca9.js" crossorigin="anonymous"></script>
+</body>
+</html>
