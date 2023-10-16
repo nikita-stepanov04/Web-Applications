@@ -29,9 +29,8 @@ form.addEventListener('submit', event => {
     const tdWithCheckbox = document.createElement('td');
     const checkbox = document.createElement('input');
     checkbox.classList.add('form-check-input');
-    checkbox.setAttribute('class', 'form-check-input');
     checkbox.setAttribute('type', 'checkbox');
-    checkbox.setAttribute('id', index.toString());
+    checkbox.setAttribute('onclick', 'disableTableButtonsIfNoCheckedInputs()');
     tdWithCheckbox.append(checkbox);
     tr.append(tdWithCheckbox);
 
@@ -41,8 +40,7 @@ form.addEventListener('submit', event => {
         tr.append(td);
     });
 
-    document.querySelector('#registrants tbody').appendChild(tr);
-    document.querySelector('#registrants tbody').appendChild(tr);
+    tbody.appendChild(tr);
     document.querySelector('.registrants').classList.remove('d-none');
 
     form.reset();
@@ -59,6 +57,7 @@ function cloneRegistrant() {
                 tbody.insertBefore(clonedTr, tr);
             }
         });
+    disableTableButtonsIfNoCheckedInputs();
     redefineIndexes();
 }
 
@@ -70,14 +69,30 @@ function deleteRegistrant() {
                 tbody.removeChild(tr);
             }
         });
+    disableTableButtonsIfNoCheckedInputs();
     redefineIndexes();
 }
 
 function redefineIndexes() {
     tbody.querySelectorAll('tr')
         .forEach((tr, index) => {
-            tr.querySelector('td input').id = index.toString();
             tr.children[1].textContent = index.toString();
         })
 }
 
+function disableTableButtonsIfNoCheckedInputs() {
+    const cloneButton = document.querySelector('#cloneRegistrant');
+    const deleteButton = document.querySelector('#deleteRegistrant');
+
+    cloneButton.disabled = true;
+    deleteButton.disabled = true;
+
+    tbody.querySelectorAll('tr')
+        .forEach(tr => {
+            const input = tr.querySelector('td input')
+            if (input.checked) {
+                cloneButton.disabled = false;
+                deleteButton.disabled = false;
+            }
+        });
+}
