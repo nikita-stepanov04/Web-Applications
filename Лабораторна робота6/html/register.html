@@ -38,7 +38,7 @@
                         <div class="col-lg-6 col-sm-12">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
-                                <input class="form-control" id="name" placeholder="Enter name" required pattern="^(?!\s*$).+">
+                                <input class="form-control" id="name" placeholder="Enter name" required pattern="^(?!.*\d.*\d)(?! +$)[\p{L}\s\-'\.]+">
                                 <div class="invalid-feedback">
                                     Please enter your name
                                 </div>
@@ -47,7 +47,7 @@
                         <div class="col-lg-6 col-sm-12">
                             <div class="mb-3">
                                 <label for="surname" class="form-label">Surname</label>
-                                <input class="form-control" id="surname" placeholder="Enter surname" required pattern="^(?!\s*$).+">
+                                <input class="form-control" id="surname" placeholder="Enter surname" required pattern="^(?!.*\d.*\d)(?! +$)[\p{L}\s\-'\.]+">
                                 <div class="invalid-feedback">
                                     Please enter surname
                                 </div>
