@@ -29,16 +29,16 @@
                         <div class="col-lg-6 col-sm-12">
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
-                                <input class="form-control" id="password" type="password" placeholder="Enter password"  required>
+                                <input class="form-control" id="password" type="password" placeholder="Enter password" required pattern=".{4,}">
                                 <div class="invalid-feedback">
-                                    Please enter password
+                                    Please enter password (min 4 characters)
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-12">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
-                                <input class="form-control" id="name" placeholder="Enter name" required>
+                                <input class="form-control" id="name" placeholder="Enter name" required pattern="^(?!\s*$).+">
                                 <div class="invalid-feedback">
                                     Please enter your name
                                 </div>
@@ -47,7 +47,7 @@
                         <div class="col-lg-6 col-sm-12">
                             <div class="mb-3">
                                 <label for="surname" class="form-label">Surname</label>
-                                <input class="form-control" id="surname" placeholder="Enter surname" required>
+                                <input class="form-control" id="surname" placeholder="Enter surname" required pattern="^(?!\s*$).+">
                                 <div class="invalid-feedback">
                                     Please enter surname
                                 </div>
