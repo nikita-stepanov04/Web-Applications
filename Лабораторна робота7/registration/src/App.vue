@@ -15,6 +15,5 @@ import RegistrantsTable from "@/components/RegistrantsTable.vue";
 
 export default {
   components: {RegistrantsTable, RegistrationForm}
-
 }
 </script>

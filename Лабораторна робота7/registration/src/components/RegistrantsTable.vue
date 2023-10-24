@@ -1,8 +1,9 @@
 <template>
-  <div v-if="$store.state.registrantsTableVisibility" class="registrants px-2" ref="registrantsTable">
+  <div v-if="$store.state.registrants.length > 0" class="registrants px-2" ref="registrantsTable">
     <div class="container-fluid bg-light rounded-4 mb-5">
+      <h3 class="pt-3 text-center">Registrants table</h3>
       <div class="table-responsive p-2">
-        <table class="table table-striped" id="registrants">
+        <table class="table table-striped table-light table-sm" id="registrants">
           <thead>
           <tr>
             <th></th>
@@ -81,11 +82,11 @@ export default {
     },
     copyButtonClick() {
       this.$store.commit('copyCheckedRegistrants');
-      this.disableTableButtonsIfNoCheckedInputs();
+      this.disableButtons(true);
     },
     deleteButtonClick() {
       this.$store.commit('removeCheckedRegistrants');
-      this.disableTableButtonsIfNoCheckedInputs();
+      this.disableButtons(true);
     }
   }
 }

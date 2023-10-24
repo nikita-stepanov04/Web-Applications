@@ -125,21 +125,18 @@ export default {
     submitForm() {
       const form = this.$refs.regForm;
       if (form.checkValidity()) {
-        const newReg = Object.assign({}, this.registrant);
-        newReg.id = this.$store.state.lastId;
 
+        const newReg = Object.assign({}, this.registrant);
+        newReg.id = this.$store.state.newId;
         this.$store.commit('incrementId');
         this.$store.commit('addRegistrant', newReg);
-        this.$store.commit('setTableVisibility', true);
 
-        // reset form inputs
         form.reset();
+        this.registrant.group = 'IA-23';
         form.classList.remove('was-validated');
-        this.registrant.group = 'IA-23'
       }else {
         form.classList.add('was-validated');
       }
-
     },
     getFile() {
       this.registrant.avatar = this.$refs.avatar.files[0].name;
