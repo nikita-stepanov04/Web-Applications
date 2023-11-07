@@ -15,11 +15,11 @@ console.log(formattedDate)
 document.querySelector('#birthday').setAttribute('max', formattedDate);
 
 //validation form
-// const form = document.querySelector('.needs-validation');
-// form.addEventListener('submit', event => {
-//     if (!form.checkValidity()) {
-//         event.preventDefault();
-//         event.stopPropagation();
-//     }
-//     form.classList.add('was-validated');
-// }, true);
+const form = document.querySelector('.needs-validation');
+form.addEventListener('submit', event => {
+    if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    form.classList.add('was-validated');
+}, true);
