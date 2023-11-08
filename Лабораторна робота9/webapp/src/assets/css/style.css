@@ -3,15 +3,16 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    margin-top: 50px;
+    margin-top: 70px;
 }
 
 header {
     position: fixed;
     top: 0;
     width: 100%;
-    opacity: 95%;
+    opacity: 97%;
     z-index: 9999;
+    transition: 0.3s;
 }
 
 footer {
@@ -27,8 +28,27 @@ footer {
     color: rgb(62, 62, 62)
 }
 
+.expandable {
+    flex: 4;
+}
+
+.hidden {
+    flex: 0 !important;
+    overflow: hidden !important;
+    padding-left: 0 !important;
+    transition: 0.2s !important;
+}
+
+.hiding {
+    flex: 1;
+    transition: flex 0.4s cubic-bezier(0, 1, 1, 1);
+    overflow: hidden;
+}
+
 .sidebar {
     padding-top: 2rem;
+    padding-left: 1rem;
+    white-space: nowrap;
 }
 
 .sidebar ul { padding: 0 }
@@ -64,7 +84,7 @@ footer {
 
 .dishes-card:hover,
 .dishes-card:hover img {
-    transform: scale(1.1);
+    transform: scale(1.07);
 }
 
 .flip:hover { animation: flip-animation 0.7s; }

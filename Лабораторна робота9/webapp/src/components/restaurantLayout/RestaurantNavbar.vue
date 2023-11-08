@@ -3,8 +3,15 @@
   <ul>
     <li v-for="dishType in dishTypes"
         :key="dishType">
-      <div :class="['sidebar-item', isItemChecked(dishType)]">
-        <a class="main-link" href="#">{{dishType.name}}</a>
+      <div :class="{
+          'sidebar-item': true,
+          'sidebar-item-checked': dishType.checked
+        }"
+      >
+        <a class="main-link" href="#"
+            @click="$emit('changeCategoryTo', dishType.name)">
+          {{dishType.name}}
+        </a>
       </div>
     </li>
   </ul>
@@ -63,22 +70,9 @@
 
 <script>
 export default {
-  data() {
-    return {
-      dishTypes: [
-        {name: 'Burgers', checked: false},
-        {name: 'Salads', checked: false},
-        {name: 'Pizzas', checked: true},
-        {name: 'Soups', checked: false}
-      ]
-    }
-  },
-  methods: {
-    isItemChecked(dishType) {
-      return dishType.checked
-          ? 'sidebar-item-checked'
-          : ''
-    }
+  emits: ['changeCategoryTo'],
+  props: {
+    dishTypes: Array
   }
 }
 </script>
