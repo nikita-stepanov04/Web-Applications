@@ -1,11 +1,16 @@
 import {createRouter, createWebHistory} from "vue-router";
+import MenuPage from "@/pages/MenuPage.vue";
 
 const routes = [
     {
-        path: '',
-        component: null,
+        path: '/',
+        redirect: '/menu'
+    },
+    {
+        path: '/menu',
+        component: MenuPage,
         meta: {
-            title: ''
+            title: 'Menu'
         }
     }
 ]
@@ -15,7 +20,8 @@ const router = createRouter({
     history: createWebHistory()
 })
 
-router.beforeEach((to, from) =>
-    document.title = to?.meta?.title ?? "Title");
+router.beforeEach(to => {
+    document.title = to.meta?.title ?? ''
+})
 
 export default router;
