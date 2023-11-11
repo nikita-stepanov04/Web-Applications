@@ -1,5 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router";
 import MenuPage from "@/pages/MenuPage.vue";
+import CartPage from "@/pages/CartPage.vue";
 
 const routes = [
     {
@@ -11,6 +12,13 @@ const routes = [
         component: MenuPage,
         meta: {
             title: 'Menu'
+        }
+    },
+    {
+        path: '/cart',
+        component: CartPage,
+        meta: {
+            title: 'Cart'
         }
     }
 ]

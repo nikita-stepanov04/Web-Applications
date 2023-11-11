@@ -7,7 +7,7 @@
           <div class="d-flex">
             <div class="p-2 card-text flex-grow-1">{{name}}</div>
             <button type="submit" class="btn btn-outline-primary text-nowrap">
-              {{ formatCurrency(price) }}
+              {{formatCurrency(price)}}
               <font-awesome-icon :icon="['fas', 'cart-shopping']" />
             </button>
           </div>
@@ -19,19 +19,16 @@
 
 <script>
   import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+  import helpers from "@/mixins/helpers"
 
   export default {
     components: {FontAwesomeIcon},
+    mixins: [helpers],
+
     props: {
       name: String,
       price: Number,
       imageUrl: String
-    },
-    methods: {
-      formatCurrency(price) {
-        return '₴ ' + price.toFixed(2)
-            .replace(/\d(?=(\d{3})+\.)/g, '$&,');
-      }
     }
   }
 </script>

@@ -30,9 +30,10 @@
 
 <!--        cart button-->
 
-        <button class="navbar-brand btn btn-outline-secondary px-2 py-1"
-              v-if="!titleHiden">
-          <span class="align-self-end me-auto mb-lg-0 position-relative" href="#">
+        <a class="navbar-brand btn btn-outline-secondary px-2 py-1"
+            v-if="!titleHiden"
+            href="/cart">
+          <span class="align-self-end me-auto mb-lg-0 position-relative">
             <font-awesome-icon :icon="['fas', 'cart-shopping']"/>
             <span class="position-absolute start-100
                 translate-middle badge rounded-pill
@@ -40,7 +41,7 @@
               {{itemsInCart > 9 ? '9+' : itemsInCart}}
             </span>
           </span>
-        </button>
+        </a>
 
 <!--        search form-->
 
@@ -96,49 +97,8 @@
               </ul>
             </li>
           </ul>
-
-          <ul class="sidebar">
-            <li>
-              <div class="sidebar-item">
-                <a class="main-link" href="#">
-                  <font-awesome-icon :icon="['fas', 'user']"/>
-                  My account
-                </a>
-              </div>
-            </li>
-            <li>
-              <div class="sidebar-item">
-                <a class="main-link" href="#">
-                  <font-awesome-icon :icon="['fas', 'cart-shopping']"/>
-                  My orders
-                </a>
-              </div>
-            </li>
-            <li>
-              <div class="sidebar-item">
-                <a class="main-link" href="#">
-                  <font-awesome-icon :icon="['fas', 'address-book']"/>
-                  Contacts
-                </a>
-              </div>
-            </li>
-            <li>
-              <div class="sidebar-item">
-                <a class="main-link" href="#">
-                  <font-awesome-icon :icon="['fas', 'circle-info']"/>
-                  FAQ
-                </a>
-              </div>
-            </li>
-            <li>
-              <div class="sidebar-item">
-                <a class="main-link" href="#">
-                  <font-awesome-icon :icon="['fas', 'calendar-days']"/>
-                  Schedule
-                </a>
-              </div>
-            </li>
-          </ul>
+          <restaurant-links class="sidebar">
+          </restaurant-links>
         </div>
       </div>
     </nav>
@@ -146,7 +106,10 @@
 </template>
 
 <script>
+  import RestaurantLinks from "@/components/UI/RestaurantLinks.vue";
+
   export default {
+    components: {RestaurantLinks},
     emits: ['changeCategoryTo', 'toggleNavbar', 'search'],
     data() {
       return {
@@ -176,7 +139,7 @@
       updateScreenWidth() {
         this.screenWidth = window.innerWidth;
         this.titleHiden = false;
-        this.longSearch = this.screenWidth > 550;
+        this.longSearch = this.screenWidth > 600;
 
         this.screenWidth > 800
             ? this.$refs.toggleNavbar?.removeAttribute('data-bs-toggle')

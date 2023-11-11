@@ -1,6 +1,6 @@
 <template>
-  <restaurant-layout v-slot="{dishes}">
-    <menu-layout :dishes="dishes"></menu-layout>
+  <restaurant-layout :pagination-required="true">
+    <menu-layout></menu-layout>
   </restaurant-layout>
 </template>
 

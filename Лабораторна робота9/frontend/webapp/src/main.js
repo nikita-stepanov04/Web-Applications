@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from '@/router/router'
+import store from '@/store/store'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min'
@@ -15,5 +16,6 @@ library.add( fas, fab );
 const app = createApp(App)
     app
         .component('font-awesome-icon', FontAwesomeIcon)
+        .use(store)
         .use(router)
         .mount('#app')

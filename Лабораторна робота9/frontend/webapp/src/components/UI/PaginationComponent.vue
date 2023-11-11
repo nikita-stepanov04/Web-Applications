@@ -1,10 +1,14 @@
 <template>
-  <div class="d-flex justify-content-center mt-4">
+  <div class="d-flex justify-content-center mt-4"
+      v-if="paginationInfo.totalPages > 1">
     <nav aria-label="...">
       <ul class="pagination pagination-md">
-        <li v-for="pageNumber in totalPages"
+        <li v-for="pageNumber in paginationInfo.totalPages"
             :key="pageNumber"
-            :class="getPaginationClass(pageNumber)">
+            :class="{
+              'page-item': true,
+              'active': pageNumber === paginationInfo.pageNumber
+            }">
           <a class="page-link"
              @click="$emit('change-page', pageNumber)">
             {{pageNumber}}
@@ -19,15 +23,7 @@
 export default {
   emits: ['change-page'],
   props: {
-    totalPages: Number,
-    currantPage: Number
-  },
-  methods: {
-    getPaginationClass(pageNumber) {
-      return pageNumber === this.currantPage
-          ? 'page-item active'
-          : 'page-item'
-    }
+    paginationInfo: Object
   }
 }
 </script>

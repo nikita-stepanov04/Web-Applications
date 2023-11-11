@@ -46,7 +46,6 @@ footer {
 }
 
 .sidebar {
-    padding-top: 2rem;
     padding-left: 1rem;
     white-space: nowrap;
 }
@@ -100,14 +99,13 @@ footer {
 .main-block {
     background-color: rgb(248,249,250);
     padding: 1rem;
-    margin: 4rem 0;
     border-radius: 1rem;
 }
 
 .orders {
     border-radius: 1rem;
     filter: drop-shadow(5px 5px 15px rgb(201, 201, 201));
-    padding: 1.5rem 1rem;
+    padding: 1.5rem 3rem;
 }
 
 .cart {
@@ -122,10 +120,6 @@ footer {
 }
 
 @media (max-width: 768px) {
-    .sidebar { padding-top: 0; }
-
-    .on-mobile-hidden { display: none; }
-
     .login-form { margin-top: 12rem; }
 
     .dishes-card {
@@ -151,5 +145,11 @@ footer {
 
     .orders {
         padding: 0;
+    }
+}
+
+@media (max-width: 800px) {
+    .sidebar-item:hover {
+        transform: scale(1.02);
     }
 }
