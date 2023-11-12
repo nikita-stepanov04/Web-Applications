@@ -52,15 +52,15 @@ namespace RestaurantApi
             app.UseSwagger();
             app.UseSwaggerUI(opts =>
             {
-                opts.SwaggerEndpoint("swagger/v1/swagger.json", "RestaurantApi");
+                opts.SwaggerEndpoint("/swagger/v1/swagger.json", "RestaurantApi");
             });
 
-            //if (app.Environment.IsDevelopment())
-            //{
-            //    DataContext context = app.Services.CreateScope()
-            //        .ServiceProvider.GetRequiredService<DataContext>();
-            //    SeedData.SeedDatabase(context);
-            //}
+            if (app.Environment.IsDevelopment())
+            {
+                DataContext context = app.Services.CreateScope()
+                    .ServiceProvider.GetRequiredService<DataContext>();
+                SeedData.SeedDatabase(context);
+            }
 
             app.Run();
         }

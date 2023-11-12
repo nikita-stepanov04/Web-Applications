@@ -136,6 +136,7 @@ footer {
         border-top-right-radius: 1rem;
         border-bottom-right-radius: 0;
         border-bottom-left-radius: 0;
+        padding: 1rem 0.4rem;
     }
 
     .cart-summary {
@@ -144,7 +145,7 @@ footer {
     }
 
     .orders {
-        padding: 0;
+        padding: 5px;
     }
 }
 

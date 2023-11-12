@@ -2,7 +2,7 @@
   <h3 class="text-center my-2">My orders</h3>
   <div class="row orders">
     <div class="col-lg-9 col-md-9 col-sm-12 cart mb-0">
-      <table class="table table-sm table-striped table-l">
+      <table class="table table-sm table-striped table-light">
         <thead>
           <tr>
             <th>#</th>
