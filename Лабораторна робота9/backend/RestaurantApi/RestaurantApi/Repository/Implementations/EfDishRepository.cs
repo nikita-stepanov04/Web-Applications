@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using Microsoft.EntityFrameworkCore;
+using RestaurantApi.Models.BindingTargets;
 using RestaurantApi.Models.DataContext;
 using RestaurantApi.Models.DishModels;
 using RestaurantApi.Repository.Interfaces;
@@ -25,6 +26,25 @@ namespace RestaurantApi.Repository.Implementations
         {
             _context.Remove(d);
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<List<Dish>> GetDishesByTypeAndPagingInfoAsync(
+            long? dishTypeId, PagingInfo pagInfo)
+        {
+            return await _context.Dishes
+                .Where(d => dishTypeId == null || d.DishTypeId == dishTypeId)
+                .Skip((pagInfo.CurrentPage - 1) * pagInfo.ItemsPerPage)
+                .Take(pagInfo.ItemsPerPage)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetTotalPagesAsync(
+            long? dishTypeId, PagingInfo pagInfo)
+        {
+            return (int)Math.Ceiling((decimal)
+                await _context.Dishes.CountAsync(d =>
+                    dishTypeId == null || d.DishTypeId == dishTypeId) /
+                        pagInfo.ItemsPerPage);
         }
     }
 }

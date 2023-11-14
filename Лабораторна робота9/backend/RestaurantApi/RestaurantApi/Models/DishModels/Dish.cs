@@ -17,6 +17,7 @@ namespace RestaurantApi.Models.DishModels
 
         [Required(ErrorMessage = "Dish type is not defined")]
         public DishType? DishType { get; set; }
+        public long DishTypeId { get; set; }
 
         [Required]
         [Range(0.01, double.MaxValue, ErrorMessage = "Please enter a positive price")]

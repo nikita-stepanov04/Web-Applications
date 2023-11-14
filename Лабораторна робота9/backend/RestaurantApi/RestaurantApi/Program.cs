@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Microsoft.OpenApi.Models;
 using RestaurantApi.Models.DataContext;
+using RestaurantApi.Repository.Interfaces;
+using RestaurantApi.Repository.Implementations;
 
 namespace RestaurantApi
 {
@@ -30,7 +32,7 @@ namespace RestaurantApi
                 {
                     builder.AllowAnyHeader();
                     builder.AllowAnyMethod();
-                    builder.WithOrigins("http://localhost:8080");
+                    builder.AllowAnyOrigin();
                 });
             });
 
@@ -43,7 +45,16 @@ namespace RestaurantApi
                 });
             });
 
+            builder.Services.AddResponseCaching();
+            builder.Services.AddMemoryCache();
+
+            builder.Services.AddScoped<IDishRepository, EfDishRepository>();
+            builder.Services.AddScoped<IDishTypesRepository, EfDishTypesRepository>();
+            builder.Services.AddScoped<IImageRepository, EfImageRepository>();
+
             var app = builder.Build();
+
+            app.UseResponseCaching();
 
             app.MapControllers();
 

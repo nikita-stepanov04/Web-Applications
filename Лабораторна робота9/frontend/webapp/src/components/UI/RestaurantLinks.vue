@@ -2,50 +2,50 @@
   <ul>
     <li>
       <div class="sidebar-item">
-        <a class="main-link" href="#">
+        <router-link class="main-link" to="/">
           <font-awesome-icon :icon="['fas', 'user']"/>
           My account
-        </a>
+        </router-link>
       </div>
     </li>
     <li>
       <div class="sidebar-item">
-        <a class="main-link" href="/menu">
+        <router-link class="main-link" to="/menu">
           <font-awesome-icon :icon="['fas', 'bowl-food']" />
           Dishes
-        </a>
+        </router-link>
       </div>
     </li>
     <li>
       <div class="sidebar-item">
-        <a class="main-link" href="/cart">
+        <router-link class="main-link" to="/cart">
           <font-awesome-icon :icon="['fas', 'cart-shopping']"/>
           My orders
-        </a>
+        </router-link>
       </div>
     </li>
     <li>
       <div class="sidebar-item">
-        <a class="main-link" href="#">
+        <router-link class="main-link" to="/">
           <font-awesome-icon :icon="['fas', 'address-book']"/>
           Contacts
-        </a>
+        </router-link>
       </div>
     </li>
     <li>
       <div class="sidebar-item">
-        <a class="main-link" href="#">
+        <router-link class="main-link" to="/">
           <font-awesome-icon :icon="['fas', 'circle-info']"/>
           FAQ
-        </a>
+        </router-link>
       </div>
     </li>
     <li>
       <div class="sidebar-item">
-        <a class="main-link" href="#">
+        <router-link class="main-link" to="/">
           <font-awesome-icon :icon="['fas', 'calendar-days']"/>
           Schedule
-        </a>
+        </router-link>
       </div>
     </li>
   </ul>

@@ -21,7 +21,7 @@
 <!--        restaurant logo with name-->
 
         <a class="navbar-brand align-self-end ms-3 me-auto mb-lg-0" href="#"
-           v-if="!titleHiden">
+           v-if="!titleHidden">
           <img src="@/assets/icons/logo.png"
                width="30" height="29"
                alt="logo">
@@ -30,18 +30,18 @@
 
 <!--        cart button-->
 
-        <a class="navbar-brand btn btn-outline-secondary px-2 py-1"
-            v-if="!titleHiden"
-            href="/cart">
+        <router-link class="navbar-brand btn btn-outline-secondary px-2 py-1"
+            v-if="!titleHidden"
+            to="/cart">
           <span class="align-self-end me-auto mb-lg-0 position-relative">
             <font-awesome-icon :icon="['fas', 'cart-shopping']"/>
             <span class="position-absolute start-100
                 translate-middle badge rounded-pill
                 bg-danger fw-light py-1 px-2 ms-1">
-              {{itemsInCart > 9 ? '9+' : itemsInCart}}
+              {{$store.getters.itemsInCart > 9 ? '9+' : $store.getters.itemsInCart}}
             </span>
           </span>
-        </a>
+        </router-link>
 
 <!--        search form-->
 
@@ -59,7 +59,7 @@
             </button>
           </div>
           <button class="btn btn-outline-secondary ms-1 px-1"
-                  v-if="titleHiden"
+                  v-if="titleHidden"
                   @click="toggleMobileSearch">
             <font-awesome-icon :icon="['fas', 'circle-xmark']" />
           </button>
@@ -83,17 +83,26 @@
                 Dishes
               </a>
               <ul class="dropdown-menu">
-                <li v-for="(dishType, key) in dishTypes" :key="key">
-                  <a :class="{
-                        'dropdown-item': true,
-                        'link-primary': dishType.checked
-                      }"
-                     href="#"
-                     @click="$emit('changeCategoryTo', dishType.name)"
-                  >
-                    {{dishType.name}}
-                  </a>
-                </li>
+                <dish-type-item
+                    :item-class="'dropdown-item'"
+                    :item-chosen-class="'dropdown-item-checked'"
+                    :id="null"
+                    :change-category-to-id="0"
+                    :name="'All'"
+                    @change-category-to="id => changeCategoryTo(id)"
+                >
+                </dish-type-item>
+                <dish-type-item
+                    v-for="dish in dishTypes"
+                    :key="dish.id"
+                    :item-class="'dropdown-item'"
+                    :item-chosen-class="'dropdown-item-checked'"
+                    :id="dish.id"
+                    :change-category-to-id="dish.id"
+                    :name="dish.name"
+                    @change-category-to="id => changeCategoryTo(id)"
+                >
+                </dish-type-item>
               </ul>
             </li>
           </ul>
@@ -107,21 +116,22 @@
 
 <script>
   import RestaurantLinks from "@/components/UI/RestaurantLinks.vue";
+  import DishTypeItem from "@/components/UI/DishTypeItem.vue";
 
   export default {
-    components: {RestaurantLinks},
+    components: {DishTypeItem, RestaurantLinks},
     emits: ['changeCategoryTo', 'toggleNavbar', 'search'],
+
+    props: {
+      dishTypes: Array
+    },
     data() {
       return {
         input: '',
-        titleHiden: true,
+        titleHidden: true,
         longSearch: true,
         screenWidth: window.innerWidth
       }
-    },
-    props: {
-      dishTypes: Array,
-      itemsInCart: Number,
     },
     mounted() {
       window.addEventListener('resize', this.updateScreenWidth);
@@ -133,12 +143,12 @@
         this.input = '';
       },
       toggleMobileSearch() {
-        this.titleHiden = !this.titleHiden;
+        this.titleHidden = !this.titleHidden;
         this.longSearch = !this.longSearch;
       },
       updateScreenWidth() {
         this.screenWidth = window.innerWidth;
-        this.titleHiden = false;
+        this.titleHidden = false;
         this.longSearch = this.screenWidth > 600;
 
         this.screenWidth > 800
@@ -148,8 +158,14 @@
       toggleNavbar() {
         if (this.screenWidth > 800) {
           this.$emit('toggleNavbar');
+        } else {
+          this.$refs.toggleNavbar.click();
         }
       },
+      changeCategoryTo(id) {
+        this.$emit('changeCategoryTo', id);
+        this.toggleNavbar();
+      }
     }
   }
 </script>

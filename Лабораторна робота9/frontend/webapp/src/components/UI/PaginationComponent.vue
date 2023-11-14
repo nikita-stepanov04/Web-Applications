@@ -7,7 +7,7 @@
             :key="pageNumber"
             :class="{
               'page-item': true,
-              'active': pageNumber === paginationInfo.pageNumber
+              'active': pageNumber === paginationInfo.currentPage
             }">
           <a class="page-link"
              @click="$emit('change-page', pageNumber)">

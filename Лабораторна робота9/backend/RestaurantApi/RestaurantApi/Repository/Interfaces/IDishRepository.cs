@@ -1,4 +1,5 @@
-﻿using RestaurantApi.Models.DishModels;
+﻿using RestaurantApi.Models.BindingTargets;
+using RestaurantApi.Models.DishModels;
 
 namespace RestaurantApi.Repository.Interfaces
 {
@@ -8,5 +9,10 @@ namespace RestaurantApi.Repository.Interfaces
 
         Task<bool> AddDishAsync(Dish d);
         Task<bool> DeleteDishAsync(Dish d);
+
+        Task<List<Dish>> GetDishesByTypeAndPagingInfoAsync(
+            long? dishTypeId, PagingInfo pagInfo);
+
+        Task<int> GetTotalPagesAsync(long? dishTypeId, PagingInfo pagInfo);
     }
 }
