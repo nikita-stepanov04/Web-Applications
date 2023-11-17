@@ -3,7 +3,6 @@
       @toggleNavbar="toggleNavbar"
       @changeCategoryTo="id => $store.dispatch('fetchDishes', {dishTypeId: id})"
       @search="(args) => console.log(args)"
-      :items-in-cart="itemsInCart"
       :dish-types="$store.state.dishTypes"
   >
   </restaurant-header>
@@ -49,16 +48,6 @@ export default {
     RestaurantFooter,
     RestaurantNavbar,
     RestaurantHeader
-  },
-
-  data() {
-    return {
-      itemsInCart: 10,
-    }
-  },
-  created() {
-    this.$store.dispatch('fetchDishTypes');
-    this.$store.dispatch('fetchDishes', {})
   },
   mounted() {
     window.addEventListener('resize', this.hideSidebarOnNarrowScreen);

@@ -1,4 +1,5 @@
 import {createStore} from "vuex";
+import request from "@/api/requestConstructor";
 
 export default createStore({
     state: {
@@ -8,38 +9,11 @@ export default createStore({
         dishesPagingInfo: {
             itemsPerPage: 6
         },
-        orders: [
-            {
-                dishId: 0,
-                quantity: 1,
-                name: 'Second pizza',
-                price: 45
-            },
-            {
-                dishId: 1,
-                quantity: 2,
-                name: 'First burger',
-                price: 65
-            },
-            {
-                dishId: 2,
-                quantity: 3,
-                name: 'Second burger',
-                price: 45
-            },
-            {
-                dishId: 3,
-                quantity: 10,
-                name: 'First soup',
-                price: 55
-            },
-            {
-                dishId: 4,
-                quantity: 200,
-                name: 'Second soup',
-                price: 70
-            },
-        ]
+        orders: [],
+        ordersPagination: {
+            currentPage: 1,
+            itemsPerPage: 6,
+        }
     },
     getters: {
         total(state) {
@@ -48,6 +22,13 @@ export default createStore({
         },
         itemsInCart(state) {
             return state.orders.length;
+        },
+        getCart(state) {
+            const pagInfo = state.ordersPagination;
+            pagInfo.totalPages = Math.ceil(state.orders.length / pagInfo.itemsPerPage);
+            const skip = (pagInfo.currentPage - 1) * pagInfo.itemsPerPage;
+            return state.orders
+                .slice(skip, skip + pagInfo.itemsPerPage);
         }
     },
     mutations: {
@@ -62,42 +43,44 @@ export default createStore({
         },
         updateChosenDishTypeId(state, dishTypeId) {
             state.chosenDishTypeId = dishTypeId;
+        },
+        setCart(state, cart) {
+            if (cart != null) {
+                state.orders = cart;
+            }
+        },
+        changeCartPage(state, page) {
+            state.ordersPagination.currentPage = page;
         }
     },
     actions: {
         async fetchDishTypes({commit}) {
-            await fetch('http://localhost:5000/api/dishes/types')
-                .then(response => response.json())
-                .then(data => commit('updateDishTypes', data))
+            await request.get('dishes/types')
+                .then(response => commit('updateDishTypes', response.data))
                 .catch(error => console.log("Error: ", error.message));
         },
+
         async fetchDishes({commit, state}, {dishTypeId, currentPage}) {
-            currentPage = currentPage ?? 1;
-            const itemsPerPage = state.dishesPagingInfo.itemsPerPage;
-
             dishTypeId = dishTypeId ?? state.chosenDishTypeId;
-            dishTypeId = dishTypeId === 0
-                ? null
-                : dishTypeId;
+            dishTypeId = dishTypeId === 0 ? null : dishTypeId;
             commit('updateChosenDishTypeId', dishTypeId);
-
-            const url = `http://localhost:5000/api/dishes/${itemsPerPage}/${currentPage}`
-                + `/${dishTypeId ?? ''}`;
-
-            fetch(url)
+            const params = {
+                type: dishTypeId,
+                page: currentPage ?? 1,
+                perPage: state.dishesPagingInfo.itemsPerPage ?? 6
+            }
+            await request.get('dishes', params)
                 .then(response => {
-                    if (!response.ok) {
-                        response = response.text();
-                        throw new Error(`Http error, status: ${response.status}`)
+                    if (response.status !== 200) {
+                        throw new Error(`Server responded with type: ${response.status}`);
                     }
-                    return response.json()
+                    return response.data;
                 })
                 .then(data => {
-                    const dishesInfo = data;
-                    commit('updateDishes', dishesInfo.dishes);
-                    commit('updateDishesPagingInfo', dishesInfo.paginationInfo);
+                    commit('updateDishes', data.dishes);
+                    commit('updateDishesPagingInfo', data.paginationInfo);
                 })
-                .catch(error => console.log('Error: ', error.message));
+                .catch(error => console.log("Error: ", error.message));
         }
     }
 })

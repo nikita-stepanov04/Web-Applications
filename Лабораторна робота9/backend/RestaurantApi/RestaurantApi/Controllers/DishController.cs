@@ -28,19 +28,20 @@ namespace RestaurantApi.Controllers
             _urlHelperFactory = urlHelperFactory;
         }
 
-        [HttpGet("{itemsPerPage:int?}/{pageNumber:int?}/{dishTypeId:long?}")]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetDishes(
-            long? dishTypeId, int pageNumber = 1, int itemsPerPage = 6)
+            long? type = null, int page = 1, int perPage = 6)
         {
+            await Console.Out.WriteLineAsync($"type: {type}, page: {page}, perpage: {perPage}");
             PagingInfo pagInfo = new()
             {
-                CurrentPage = pageNumber,
-                ItemsPerPage = itemsPerPage
+                CurrentPage = page,
+                ItemsPerPage = perPage
             };
 
             List<Dish> dishes = await _dishRepository
-                .GetDishesByTypeAndPagingInfoAsync(dishTypeId, pagInfo);
+                .GetDishesByTypeAndPagingInfoAsync(type, pagInfo);
 
             List<DishBindingTarget> dishBindingTargets = new();
             IUrlHelper helper = _urlHelperFactory.GetUrlHelper(ControllerContext);
@@ -48,6 +49,7 @@ namespace RestaurantApi.Controllers
             {
                 dishBindingTargets.Add(new DishBindingTarget()
                 {
+                    Id = dish.Id,
                     Name = dish.Name,
                     Description = dish.Description,
                     Price = dish.Price,
@@ -55,12 +57,12 @@ namespace RestaurantApi.Controllers
                         controller: "Dish",
                         action: "GetImage",
                         values: new { id = dish.ImageId },
-                        protocol: Request.Scheme)                        
+                        protocol: Request.Scheme)
                 });
             }
 
             pagInfo.TotalPages = await 
-                _dishRepository.GetTotalPagesAsync(dishTypeId, pagInfo);
+                _dishRepository.GetTotalPagesAsync(type, pagInfo);
             
             return Ok(new
             {

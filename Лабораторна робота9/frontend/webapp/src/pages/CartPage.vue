@@ -3,7 +3,6 @@
       @toggleNavbar="toggleNavbar"
       @changeCategoryTo="(args) => console.log(args)"
       @search="(args) => console.log(args)"
-      :items-in-cart="itemsInCart"
       :dish-types="$store.state.dishTypes"
   >
   </restaurant-header>
@@ -22,12 +21,12 @@
         </div>
       </div>
     </div>
-<!--    <pagination-component-->
-<!--        class="mb-3"-->
-<!--        :pagination-info="paginationInfo"-->
-<!--        @change-page="args => console.log(args)"-->
-<!--    >-->
-<!--    </pagination-component>-->
+    <pagination-component
+        class="mb-3"
+        :pagination-info="$store.state.ordersPagination"
+        @change-page="page => $store.commit('changeCartPage', page)"
+    >
+    </pagination-component>
     <restaurant-footer></restaurant-footer>
   </div>
 
@@ -37,32 +36,18 @@
 import RestaurantHeader from "@/components/restaurantLayout/RestaurantHeader.vue";
 import RestaurantNavbar from "@/components/restaurantLayout/RestaurantNavbar.vue";
 import RestaurantFooter from "@/components/restaurantLayout/RestaurantFooter.vue";
-//import PaginationComponent from "@/components/UI/PaginationComponent.vue";
+import PaginationComponent from "@/components/UI/PaginationComponent.vue";
 import CartLayout from "@/components/restaurantLayout/cartLayout/CartLayout.vue";
 
 export default {
   components: {
     CartLayout,
-    //PaginationComponent,
+    PaginationComponent,
     RestaurantFooter,
     RestaurantNavbar,
     RestaurantHeader
   },
 
-  data() {
-    return {
-      paginationInfo: {
-        pageNumber: 1,
-        itemsPerPage: 6,
-        totalPages: 3,
-        dishTypeId: null
-      },
-      itemsInCart: 10,
-    }
-  },
-  created() {
-    this.$store.dispatch('fetchDishTypes');
-  },
   mounted() {
     window.addEventListener('resize', this.hideSidebarOnNarrowScreen);
     this.hideSidebarOnNarrowScreen();

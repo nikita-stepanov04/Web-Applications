@@ -4,6 +4,7 @@ namespace RestaurantApi.Models.BindingTargets
 {
     public class DishBindingTarget
     {
+        public long Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
         public DishType? DishType { get; set; }

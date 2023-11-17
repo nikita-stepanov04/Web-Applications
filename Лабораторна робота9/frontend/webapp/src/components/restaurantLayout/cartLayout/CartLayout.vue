@@ -14,7 +14,7 @@
         </thead>
         <tbody>
           <cart-line
-              v-for="cartLine in $store.state.orders"
+              v-for="cartLine in $store.getters.getCart"
               :cart-line="cartLine"
               :key="cartLine.dishId">
           </cart-line>

@@ -4,9 +4,9 @@
           [itemClass]: true,
           [itemChosenClass]: $store.state.chosenDishTypeId === id
         }"
+        @click="$emit('changeCategoryTo', changeCategoryToId)"
     >
-      <a class="main-link"
-         @click="$emit('changeCategoryTo', changeCategoryToId)">
+      <a class="main-link" href="#">
         {{name}}
       </a>
     </div>
