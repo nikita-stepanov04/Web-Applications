@@ -1,7 +1,7 @@
 <template>
   <restaurant-header
       @toggleNavbar="toggleNavbar"
-      @changeCategoryTo="(args) => console.log(args)"
+      @changeCategoryTo="id => toMenu(id)"
       @search="(args) => console.log(args)"
       :dish-types="$store.state.dishTypes"
   >
@@ -10,7 +10,7 @@
     <div class="d-flex">
       <div class="sidebar hiding hidden" ref="sidebar">
         <restaurant-navbar
-            @changeCategoryTo="(args) => console.log(args)"
+            @changeCategoryTo="id => toMenu(id)"
             :dish-types="$store.state.dishTypes"
         >
         </restaurant-navbar>
@@ -21,12 +21,6 @@
         </div>
       </div>
     </div>
-    <pagination-component
-        class="mb-3"
-        :pagination-info="$store.state.ordersPagination"
-        @change-page="page => $store.commit('changeCartPage', page)"
-    >
-    </pagination-component>
     <restaurant-footer></restaurant-footer>
   </div>
 
@@ -36,13 +30,11 @@
 import RestaurantHeader from "@/components/restaurantLayout/RestaurantHeader.vue";
 import RestaurantNavbar from "@/components/restaurantLayout/RestaurantNavbar.vue";
 import RestaurantFooter from "@/components/restaurantLayout/RestaurantFooter.vue";
-import PaginationComponent from "@/components/UI/PaginationComponent.vue";
 import CartLayout from "@/components/restaurantLayout/cartLayout/CartLayout.vue";
 
 export default {
   components: {
     CartLayout,
-    PaginationComponent,
     RestaurantFooter,
     RestaurantNavbar,
     RestaurantHeader
@@ -62,6 +54,10 @@ export default {
       window.innerWidth <= 800
           ? sidebar?.classList?.add('hidden')
           : sidebar?.classList?.remove('hidden');
+    },
+    toMenu(id) {
+      this.$store.dispatch('fetchDishes', {dishTypeId: id});
+      this.$router.push('/menu');
     }
   }
 }

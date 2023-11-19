@@ -25,5 +25,6 @@ const properties = app.config.globalProperties;
 properties.$store.dispatch('fetchDishTypes');
 properties.$store.dispatch('fetchDishes', {});
 properties.$store.commit('setCart', properties.$cookies.get('orders'));
+properties.$store.commit('setCookies', properties.$cookies);
 
 app.mount('#app');

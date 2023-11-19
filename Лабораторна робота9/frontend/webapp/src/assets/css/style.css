@@ -11,7 +11,7 @@ header {
     top: 0;
     width: 100%;
     opacity: 97%;
-    z-index: 9999;
+    z-index: 999;
     transition: 0.3s;
 }
 
@@ -108,7 +108,7 @@ footer {
 
 .orders {
     border-radius: 1rem;
-    filter: drop-shadow(5px 5px 15px rgb(201, 201, 201));
+    filter: drop-shadow(5px 5px 10px #c7c7c7);
     padding: 1.5rem 3rem;
 }
 
@@ -157,4 +157,26 @@ footer {
     .sidebar-item:hover {
         transform: scale(1.02);
     }
+}
+
+@media (max-width: 450px) {
+    .on-mobile-cart-column-hidden {
+        display: none;
+    }
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: rotate(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: rotate(8deg);
+    }
+    20%, 40%, 60%, 80% {
+        transform: rotate(-8deg);
+    }
+}
+
+.shake-animation {
+    animation: shake 0.5s infinite;
 }

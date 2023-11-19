@@ -3,6 +3,7 @@ import request from "@/api/requestConstructor";
 
 export default createStore({
     state: {
+        cookies: null,
         dishTypes: [],
         chosenDishTypeId: null,
         dishes: [],
@@ -21,7 +22,8 @@ export default createStore({
                 total + order.price * order.quantity, 0);
         },
         itemsInCart(state) {
-            return state.orders.length;
+            return state.orders.reduce((total, order) =>
+                total + order.quantity, 0);
         },
         getCart(state) {
             const pagInfo = state.ordersPagination;
@@ -49,8 +51,41 @@ export default createStore({
                 state.orders = cart;
             }
         },
+        buy(state, dishId) {
+            let orders = state.orders;
+            const order = orders.filter(o => o.dishId === dishId)[0];
+            if (order != null) {
+                order.quantity++;
+            } else {
+                const dish = state.dishes.filter(d => d.id === dishId)[0];
+                const order = {
+                    dishId: dishId,
+                    quantity: 1,
+                    name: dish.name,
+                    price: dish.price
+                }
+                state.orders.push(order);
+            }
+            state.cookies.set('orders', state.orders, '1d');
+        },
         changeCartPage(state, page) {
             state.ordersPagination.currentPage = page;
+        },
+        setCookies(state, cookies) {
+            state.cookies = cookies;
+        },
+        increaseDishQuantity(state, {id, increaseBy}) {
+            const order = state.orders.filter(o => o.dishId === id)[0]
+            if (order.quantity + increaseBy > 0) {
+                order.quantity += increaseBy;
+            }
+            state.cookies.set('orders', state.orders, '1d');
+        },
+        removeDishFromCart(state, id) {
+            state.orders = id > 0
+                ? state.orders.filter(o => o.dishId !== id)
+                : []
+            state.cookies.set('orders', state.orders, '1d');
         }
     },
     actions: {

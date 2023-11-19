@@ -32,13 +32,14 @@
 
         <router-link class="navbar-brand btn btn-outline-secondary px-2 py-1"
             v-if="!titleHidden"
-            to="/cart">
+            to="/cart"
+            id="cart">
           <span class="align-self-end me-auto mb-lg-0 position-relative">
             <font-awesome-icon :icon="['fas', 'cart-shopping']"/>
             <span class="position-absolute start-100
                 translate-middle badge rounded-pill
                 bg-danger fw-light py-1 px-2 ms-1">
-              {{$store.getters.itemsInCart > 9 ? '9+' : $store.getters.itemsInCart}}
+              {{$store.getters.itemsInCart}}
             </span>
           </span>
         </router-link>
