@@ -3,13 +3,19 @@ import request from "@/api/requestConstructor";
 
 export default createStore({
     state: {
+        userAuthenticationRole: null,
+        userAuthenticationTimer: null,
+        userAuthenticationTime: 2 * 60 * 60 * 1000, // 2 hours in milliseconds
+
         cookies: null,
+
         dishTypes: [],
         chosenDishTypeId: null,
         dishes: [],
         dishesPagingInfo: {
             itemsPerPage: 6
         },
+
         orders: [],
         ordersPagination: {
             currentPage: 1,
@@ -86,9 +92,48 @@ export default createStore({
                 ? state.orders.filter(o => o.dishId !== id)
                 : []
             state.cookies.set('orders', state.orders, '1d');
+        },
+        addUser(state, userRole) {
+            state.userAuthenticationRole = userRole;
+            state.userAuthenticationTimer =
+                setTimeout(() =>  {
+                    state.userAuthenticationRole = null;
+                }, state.userAuthenticationTime);
+        },
+        clearUser(state) {
+            state.userAuthenticationRole = null;
+            clearTimeout(state.userAuthenticationTimer);
+            state.userAuthenticationTimer = null;
         }
     },
     actions: {
+        updateUser({state, commit}, userRole) {
+            if (state.userAuthenticationRole != null) {
+                commit('clearUser')
+            }
+            commit('addUser', userRole);
+        },
+
+        async logout({commit}) {
+            commit('clearUser');
+            try {
+                await request.get('auth/logout', {}, true);
+            } catch (error) {
+                console.log('something went wrong')
+            }
+        },
+
+        async checkUserAuthorization({dispatch}) {
+            try {
+                const response = await request.get('auth/get-role', {}, true);
+                const role = response.data
+                dispatch('updateUser', role);
+                return role;
+            } catch (error) {
+                console.log('User is not authenticated');
+            }
+        },
+
         async fetchDishTypes({commit}) {
             await request.get('dishes/types')
                 .then(response => commit('updateDishTypes', response.data))
@@ -116,6 +161,6 @@ export default createStore({
                     commit('updateDishesPagingInfo', data.paginationInfo);
                 })
                 .catch(error => console.log("Error: ", error.message));
-        }
+        },
     }
 })

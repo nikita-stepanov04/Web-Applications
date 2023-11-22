@@ -2,7 +2,7 @@
   <ul>
     <li>
       <div class="sidebar-item">
-        <router-link class="main-link" to="/">
+        <router-link class="main-link" to="/my-account">
           <font-awesome-icon :icon="['fas', 'user']"/>
           My account
         </router-link>

@@ -6,7 +6,7 @@
       :dish-types="$store.state.dishTypes"
   >
   </restaurant-header>
-  <div class="page">
+  <div class="page mt-6">
     <div class="d-flex">
       <div class="sidebar hiding hidden" ref="sidebar">
         <restaurant-navbar

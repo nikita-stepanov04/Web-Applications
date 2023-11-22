@@ -17,7 +17,7 @@
       </div>
       <div class="expandable">
         <div class="container" ref="expandableContainer">
-          <cart-layout></cart-layout>
+          <my-account-layout></my-account-layout>
         </div>
       </div>
     </div>
@@ -30,11 +30,11 @@
 import RestaurantHeader from "@/components/restaurantLayout/RestaurantHeader.vue";
 import RestaurantNavbar from "@/components/restaurantLayout/RestaurantNavbar.vue";
 import RestaurantFooter from "@/components/restaurantLayout/RestaurantFooter.vue";
-import CartLayout from "@/components/restaurantLayout/cartLayout/CartLayout.vue";
+import MyAccountLayout from "@/components/restaurantLayout/myAccountLayout/MyAccountLayout.vue";
 
 export default {
   components: {
-    CartLayout,
+    MyAccountLayout,
     RestaurantFooter,
     RestaurantNavbar,
     RestaurantHeader
@@ -50,6 +50,7 @@ export default {
       sidebar.classList.toggle('hidden');
     },
     hideSidebarOnNarrowScreen() {
+      console.log("hide navbar")
       const sidebar = this.$refs.sidebar;
       window.innerWidth <= 800
           ? sidebar?.classList?.add('hidden')

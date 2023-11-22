@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using RestaurantApi.Models.IdentityContext;
+using System.Text.Json;
 
 namespace RestaurantApi.Models.DataContext
 {
@@ -7,23 +8,41 @@ namespace RestaurantApi.Models.DataContext
     { 
         public static async void SeedDatabase(IApplicationBuilder app, IConfiguration config)
         { 
-            string? adminUser = config["AdminSettings:AdminUser"];
+            string? adminEmail = config["AdminSettings:AdminEmail"];
             string? adminPassword = config["AdminSettings:AdminPassword"];
 
-            if (adminUser != null && adminPassword != null)
+            if (adminEmail != null && adminPassword != null)
             {
-                UserManager<RestaurantUser> userManager = app.ApplicationServices.CreateScope()
-                    .ServiceProvider.GetRequiredService<UserManager<RestaurantUser>>();
-
-                RestaurantUser? user = await userManager.FindByNameAsync(adminUser);
-                if (user == null)
+                using (var scope = app.ApplicationServices.CreateScope())
                 {
-                    user = new RestaurantUser() 
+                    var userManager = scope.ServiceProvider
+                        .GetRequiredService<UserManager<RestaurantUser>>();
+                    var roleManager = scope.ServiceProvider
+                        .GetRequiredService<RoleManager<IdentityRole>>();
+
+                    if (!roleManager.Roles.Any())
                     {
-                        UserName = adminUser,
-                        PhoneNumber = "555-1234"
-                    };                    
-                    await userManager.CreateAsync(user, adminPassword);
+                        IdentityRole roleAdmin = new(UserRoles.Admin);
+                        IdentityRole roleUser = new(UserRoles.User);
+
+                        await roleManager.CreateAsync(roleAdmin);
+                        await roleManager.CreateAsync(roleUser);
+                    }
+
+                    RestaurantUser? user = await userManager.FindByEmailAsync(adminEmail);
+                    if (user == null)
+                    {
+                        user = new RestaurantUser()
+                        {
+                            Email = adminEmail,
+                            UserName = adminEmail
+                        };
+                        await Console.Out.WriteLineAsync(JsonSerializer.Serialize(user));
+                        var result = await userManager.CreateAsync(user, adminPassword);
+                        var result1 = await userManager.AddToRoleAsync(user, UserRoles.Admin);
+                        await Console.Out.WriteLineAsync($"\n\n----{result}, {result1}--------\n\n");
+                    }                  
+                    
                 }
             }
             else

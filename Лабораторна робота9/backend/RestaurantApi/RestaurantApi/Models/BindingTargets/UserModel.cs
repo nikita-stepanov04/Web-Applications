@@ -6,8 +6,8 @@ namespace RestaurantApi.Models.BindingTargets
     public class UserModel
     {
         [Required]
-        [StringLength(100, MinimumLength = 3)]
-        public string? UserName { get; set; }
+        [EmailAddress]
+        public string? Email { get; set; }
 
         [Required]
         [StringLength(256, MinimumLength = 3)]
@@ -15,7 +15,7 @@ namespace RestaurantApi.Models.BindingTargets
             ErrorMessage = "Password must contain one lowercase, one uppercase character, nubmer and one non-alhpanumeric character")]
         public string? Password { get; set; }
 
-        [RegularExpression(@"^\\+380 \\(\\d{2}\\) \\d{3}-\\d{2}-\\d{2}$")]
+        [RegularExpression(@"^\+380 \(\d{2}\) \d{3}-\d{2}-\d{2}$")]
         public string? PhoneNumber { get; set; }
 
         [Required]
@@ -46,8 +46,10 @@ namespace RestaurantApi.Models.BindingTargets
             {
                 Name = this.Name,
                 Surname = this.Surname,
-                UserName = this.UserName,
+                Email = this.Email,
+                UserName = this.Email,
                 PhoneNumber = this.PhoneNumber,
+                Birthday = this.Birthday,
                 Gender = this.Gender,
                 City = this.City,
                 Street = this.Street,

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantApi.Models.BindingTargets;
 using RestaurantApi.Models.IdentityContext;
+using System.Text.Json;
 
 namespace RestaurantApi.Controllers
 {
@@ -27,17 +28,19 @@ namespace RestaurantApi.Controllers
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
             RestaurantUser? user = await _userManager
-                .FindByNameAsync(loginModel.Username!);
+                .FindByEmailAsync(loginModel.Email!);           
 
             if (user != null)
             {
                 await _signInManager.SignOutAsync();
                 if ((await _signInManager.PasswordSignInAsync(user,
                     loginModel.Password!, false, false)).Succeeded)
-                {                    
-                    return Ok();
+                {
+                    string role = (await _userManager.GetRolesAsync(user))
+                        .FirstOrDefault() ?? UserRoles.User;
+                    return Ok(new { role = role });
                 }
-                
+
             }
             return Unauthorized("Invalid username or password");
         }
@@ -49,43 +52,54 @@ namespace RestaurantApi.Controllers
         public async Task<IActionResult> Register(UserModel userModel)
         {
             RestaurantUser? user = await
-                _userManager.FindByNameAsync(userModel.Name!);
+                _userManager.FindByEmailAsync(userModel.Email!);
             if (user == null)
             {
                 user = userModel.ToRestaurantUser();
+                await Console.Out.WriteLineAsync(JsonSerializer.Serialize(user));
                 if ((await _userManager.CreateAsync(
                     user, userModel.Password!)).Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, UserRoles.User);
                     return Ok();
                 }
                 else
                 {
-                    return BadRequest($"Can not create user with username:" +
-                        $" {userModel.UserName} and password: {userModel.Password}");
+                    return BadRequest($"Can not create user with email:" +
+                        $" {userModel.Email} and password: {userModel.Password}");
                 }
-                
+
             }
-            return Conflict("Username is already taken");
+            else
+            {
+                return Conflict("Username is already taken");
+            }
+        }
+        
+        [HttpGet("get-role")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetUserRole()
+        {
+            var claimsPrincipal = this.User;
+            if (claimsPrincipal != null)
+            {
+                RestaurantUser? user = await
+                    _userManager.GetUserAsync(this.User) ?? new();
+                var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault(); 
+                return Ok(role);
+            }
+            return NotFound();           
         }
 
         [Authorize]
-        [HttpGet("user")]
+        [HttpGet("user-info")]
         public async Task<IActionResult> UserInfo()
         {
             RestaurantUser? user = await
                 _userManager.GetUserAsync(this.User) ?? new();
 
-            UserModel userData = new()
-            {
-                Name = user.Name,
-                Surname = user.Surname,
-                UserName = user.UserName,
-                PhoneNumber = user.PhoneNumber,
-                Gender = user.Gender,
-                City = user.City,
-                Street = user.Street,
-                Flat = user.Flat
-            };
+            UserModel userData = user.ToUserModel();
             return Ok(userData);
         }
 

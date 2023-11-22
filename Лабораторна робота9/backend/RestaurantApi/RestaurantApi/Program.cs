@@ -25,7 +25,7 @@ namespace RestaurantApi
             builder.Services.AddMemoryCache();
             builder.Services.AddIdentity<RestaurantUser, IdentityRole>(opts =>
             {
-                opts.User.RequireUniqueEmail = false;
+                opts.User.RequireUniqueEmail = true;
             })
                 .AddEntityFrameworkStores<IdentityContext>();                
 
@@ -42,12 +42,18 @@ namespace RestaurantApi
 
             builder.Services.AddCors(opts =>
             {
-                opts.AddPolicy("AllowAll", builder =>
+                opts.AddPolicy("Frontend", builder =>
                 {
                     builder.AllowAnyHeader();
                     builder.AllowAnyMethod();
-                    builder.AllowAnyOrigin();
+                    builder.WithOrigins("http://localhost:8080");
+                    builder.AllowCredentials();
                 });
+            });
+
+            builder.Services.Configure<CookiePolicyOptions>(opts =>
+            {
+                opts.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
             builder.Services.AddSwaggerGen(c =>
@@ -66,9 +72,9 @@ namespace RestaurantApi
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapControllers();
+            app.UseCors("Frontend");            
 
-            app.UseCors("AllowAll");
+            app.MapControllers();            
 
             app.UseSwagger();
             app.UseSwaggerUI(opts =>
@@ -78,9 +84,9 @@ namespace RestaurantApi
 
             if (app.Environment.IsDevelopment())
             {               
-                SeedData.SeedDatabase(app);
-                SeedIdentity.SeedDatabase(app, builder.Configuration);
+                SeedData.SeedDatabase(app);                
             }
+            SeedIdentity.SeedDatabase(app, builder.Configuration);
 
             app.Run();
         }

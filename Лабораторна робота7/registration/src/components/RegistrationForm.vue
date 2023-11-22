@@ -147,6 +147,7 @@ export default {
     const phone = this.$refs.phone;
     const inputMask = new Inputmask('+380 (99) 999-99-99');
     inputMask.mask(phone);
+    console.log('test')
 
     // restrict date to choose in birthday input
     const date = new Date();
