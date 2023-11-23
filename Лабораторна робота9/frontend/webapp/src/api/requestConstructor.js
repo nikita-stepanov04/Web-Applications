@@ -12,5 +12,10 @@ export default {
         return axios.post(this.url + path, body, {
             withCredentials: withCredentials
         })
-    }
+    },
+    async put(path, body, withCredentials) {
+        return axios.put(this.url + path, body, {
+            withCredentials: withCredentials
+        })
+    },
 }

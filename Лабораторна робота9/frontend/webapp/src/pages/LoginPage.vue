@@ -11,7 +11,6 @@
       <div class="row">
         <div class="col-12">
           <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
             <label for="email" class="form-label">Email</label>
             <input class="form-control"
                    v-model="loginData.email"

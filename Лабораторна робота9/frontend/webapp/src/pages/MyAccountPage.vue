@@ -50,7 +50,6 @@ export default {
       sidebar.classList.toggle('hidden');
     },
     hideSidebarOnNarrowScreen() {
-      console.log("hide navbar")
       const sidebar = this.$refs.sidebar;
       window.innerWidth <= 800
           ? sidebar?.classList?.add('hidden')

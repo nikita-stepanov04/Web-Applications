@@ -28,7 +28,7 @@ namespace RestaurantApi.Controllers
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
             RestaurantUser? user = await _userManager
-                .FindByEmailAsync(loginModel.Email!);           
+                .FindByEmailAsync(loginModel.Email!);
 
             if (user != null)
             {
@@ -75,7 +75,7 @@ namespace RestaurantApi.Controllers
                 return Conflict("Username is already taken");
             }
         }
-        
+
         [HttpGet("get-role")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -86,10 +86,10 @@ namespace RestaurantApi.Controllers
             {
                 RestaurantUser? user = await
                     _userManager.GetUserAsync(this.User) ?? new();
-                var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault(); 
+                var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
                 return Ok(role);
             }
-            return NotFound();           
+            return NotFound();
         }
 
         [Authorize]
@@ -101,6 +101,41 @@ namespace RestaurantApi.Controllers
 
             UserModel userData = user.ToUserModel();
             return Ok(userData);
+        }
+
+        [HttpGet("check-email-availability")]
+        public async Task<IActionResult> IsEmailAvailable(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            return Ok(user == null);
+        }
+
+        [Authorize]
+        [HttpPut("edit-user")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> PatchUser(UserUpdateModel userModel)
+        {
+            RestaurantUser? user = await _userManager.GetUserAsync(this.User);
+            if (user != null)
+            { 
+                user.UpdateFromUserModel(userModel); // update all fields except password
+
+                if (userModel.NewPassword != null)
+                {
+                    var passwordChangeResult = await _userManager
+                        .ChangePasswordAsync(user, userModel.CurrentPassword ?? "",
+                            userModel.NewPassword);
+                    if (!passwordChangeResult.Succeeded)
+                    {
+                        return BadRequest();
+                    }
+                }                
+                
+                await _userManager.UpdateAsync(user);
+                return Ok();
+            }
+            return BadRequest();
         }
 
         [Authorize]

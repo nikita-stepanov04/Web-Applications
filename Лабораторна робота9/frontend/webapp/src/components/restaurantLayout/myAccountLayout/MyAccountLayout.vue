@@ -13,24 +13,21 @@
             <h3 class="text-center mt-2 mb-4">My Account</h3>
           </div>
           <div class="col-auto ms-auto">
-            <button
+            <a
                 class="btn btn-outline-success"
                 @click="logout">
               Log out
-            </button>
+            </a>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-6 col-xs-12">
+        <div class="col-12">
           <div class="mb-3">
-            <label for="email" class="form-label">Username</label>
-            <input class="form-control"
-                   type="email"
-                   v-model="user.email"
-                   id="email"
-                   placeholder="Enter email"
-            >
+            <label for="email" class="form-label">Email</label>
+            <p class="form-control"
+               id="email"
+            >{{ user.email }}</p>
             <div class="invalid-feedback">
               Please enter email
             </div>
@@ -38,10 +35,26 @@
         </div>
         <div class="col-sm-6 col-xs-12x">
           <div class="mb-3">
-            <label for="password" class="form-label">New Password</label>
+            <label for="currentPassword" class="form-label">Enter current Password</label>
             <input class="form-control"
-                   v-model="user.password"
-                   id="password"
+                   v-model="user.currentPassword"
+                   id="currentPassword"
+                   type="password"
+                   placeholder="Enter current password"
+                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{6,100}$"
+            >
+            <div class="invalid-feedback">
+              Please enter password, must contain one lowercase,
+              one uppercase character, number and one non-alphanumeric character
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-xs-12x">
+          <div class="mb-3">
+            <label for="newPassword" class="form-label">Enter new Password</label>
+            <input class="form-control"
+                   v-model="user.newPassword"
+                   id="newPassword"
                    type="password"
                    placeholder="Enter new password"
                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{6,100}$"
@@ -183,7 +196,11 @@
       </div>
       <div class="d-flex my-4">
         <button class="btn btn-success flex-grow-1 me-1" type="submit">Save changes</button>
-        <button class="btn btn-secondary flex-grow-1 ms-1">Discard changes</button>
+        <a class="btn btn-secondary flex-grow-1 ms-1"
+           @click="discardChanges"
+        >
+          Discard changes
+        </a>
       </div>
     </form>
   </div>
@@ -200,18 +217,51 @@ export default {
 
   data() {
     return {
-      user: {}
+      user: {},
+      userCopy: {}
     }
   },
   methods: {
-    submitForm() {
+    async submitForm() {
       if (this.validateForm()) {
-        console.log('valid');
+        if (this.user.newPassword && !this.user.currentPassword) {
+          this.$refs.dismissibleAlert.alert('alert-danger', 'Enter currant password')
+        } else {
+          if (JSON.stringify(this.user) !== JSON.stringify(this.userCopy)) {
+            try {
+              await request.put('auth/edit-user', this.user, true);
+              this.$refs.dismissibleAlert.alert('alert-success', 'Changes were applied')
+            } catch (error) {
+              console.log('Something went wrong')
+            }
+          } else {
+            this.$refs.dismissibleAlert.alert('alert-warning', 'Nothing changed');
+          }
+        }
+      }
+    },
+    async discardChanges() {
+      if (JSON.stringify(this.user) !== JSON.stringify(this.userCopy)) {
+        await this.getUserData();
+        this.$refs.dismissibleAlert.alert('alert-success', 'Changes were discard')
+      } else {
+        this.$refs.dismissibleAlert.alert('alert-warning', 'Nothing changed');
       }
     },
     logout() {
       this.$store.dispatch('logout')
       this.$router.push('/menu');
+    },
+    async getUserData() {
+      try {
+        const data = (await request.get('auth/user-info', {}, true)).data;
+        data.birthday = data.birthday.split('T')[0] // get rid of time part
+        this.user = data;
+        this.userCopy = Object.assign({}, data)
+      } catch (error) {
+        this.$refs.dismissibleAlert.alert('alert-danger',
+            'Something went wrong, can not load user data');
+      }
     }
   },
   mounted() {
@@ -219,15 +269,7 @@ export default {
     this.restrictDateInputWithYesterdayDate(this.$refs.birthday)
   },
   async created() {
-    try {
-      const response = await request.get('auth/user-info', {}, true);
-      const data = response.data;
-      data.birthday = data.birthday.split('T')[0] // get rid of time part
-      this.user = response.data;
-    } catch (error) {
-      this.$refs.dismissibleAlert.alert('alert-danger',
-          'Something went wrong, can not load user data');
-    }
+    await this.getUserData();
   }
 }
 </script>
