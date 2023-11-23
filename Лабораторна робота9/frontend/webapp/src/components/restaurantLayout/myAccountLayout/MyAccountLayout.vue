@@ -1,5 +1,5 @@
 <template>
-  <div class="main-block orders mt-4 mx-5 mb-5">
+  <div class="main-block orders mt-4 mx-sm-5 mb-5">
     <dismissible-alert ref="dismissibleAlert"></dismissible-alert>
     <form action="#"
           @submit.prevent="submitForm"
@@ -9,8 +9,8 @@
           novalidate>
       <div class="container-fluid">
         <div class="row">
-          <div class="col-4 offset-4">
-            <h3 class="text-center mt-2 mb-4">My Account</h3>
+          <div class="col-md-4 offset-md-4 col-8 offset-0">
+            <h3 class="text-md-center text-start mt-2 mb-4">My Account</h3>
           </div>
           <div class="col-auto ms-auto">
             <a
@@ -218,34 +218,37 @@ export default {
   data() {
     return {
       user: {},
-      userCopy: {}
+      userCopy: {},
     }
   },
   methods: {
     async submitForm() {
+      const alert = this.$refs.dismissibleAlert;
       if (this.validateForm()) {
         if (this.user.newPassword && !this.user.currentPassword) {
-          this.$refs.dismissibleAlert.alert('alert-danger', 'Enter currant password')
+          alert.alert('alert-danger', 'Enter currant password')
         } else {
           if (JSON.stringify(this.user) !== JSON.stringify(this.userCopy)) {
             try {
-              await request.put('auth/edit-user', this.user, true);
-              this.$refs.dismissibleAlert.alert('alert-success', 'Changes were applied')
+              await request.put('auth/edit-user', this.user, true)
+              this.userCopy = Object.assign({}, this.user);
+              alert.alert('alert-success', 'Changes were applied')
             } catch (error) {
-              console.log('Something went wrong')
+              alert.alert('alert-danger', 'Failed to apply changes');
             }
           } else {
-            this.$refs.dismissibleAlert.alert('alert-warning', 'Nothing changed');
+            alert.alert('alert-warning', 'Nothing changed');
           }
         }
       }
     },
     async discardChanges() {
+      const alert = this.$refs.dismissibleAlert;
       if (JSON.stringify(this.user) !== JSON.stringify(this.userCopy)) {
         await this.getUserData();
-        this.$refs.dismissibleAlert.alert('alert-success', 'Changes were discard')
+        alert.alert('alert-success', 'Changes were discard')
       } else {
-        this.$refs.dismissibleAlert.alert('alert-warning', 'Nothing changed');
+        alert.alert('alert-warning', 'Nothing changed');
       }
     },
     logout() {
@@ -253,13 +256,14 @@ export default {
       this.$router.push('/menu');
     },
     async getUserData() {
+      const alert = this.$refs.dismissibleAlert;
       try {
         const data = (await request.get('auth/user-info', {}, true)).data;
         data.birthday = data.birthday.split('T')[0] // get rid of time part
         this.user = data;
         this.userCopy = Object.assign({}, data)
       } catch (error) {
-        this.$refs.dismissibleAlert.alert('alert-danger',
+        alert.alert('alert-danger',
             'Something went wrong, can not load user data');
       }
     }

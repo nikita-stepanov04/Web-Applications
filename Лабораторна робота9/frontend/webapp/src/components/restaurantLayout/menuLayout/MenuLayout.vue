@@ -2,7 +2,7 @@
   <h3 class="text-center my-2">Choose your dishes</h3>
   <div class="row">
     <menu-item
-        v-for="(dish, key) in dishes"
+        v-for="(dish, key) in $store.state.dishes"
         :key="key"
         v-bind:dish="dish"
         @buy="id => $store.commit('buy', id)">
@@ -15,9 +15,5 @@
 
  export default {
    components: {MenuItem},
-
-   props: {
-    dishes: Array
-   }
  }
 </script>
