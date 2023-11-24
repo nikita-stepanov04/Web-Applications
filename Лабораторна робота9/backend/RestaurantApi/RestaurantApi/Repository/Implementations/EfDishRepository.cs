@@ -28,13 +28,31 @@ namespace RestaurantApi.Repository.Implementations
             return await _context.SaveChangesAsync() > 0;
         }
 
+        public Task<Dish?> GetDishById(long id) =>
+            _context.Dishes.FirstOrDefaultAsync(d => d.Id == id);
+
+        public Task<string?> GetDishDescriptionById(long id) =>
+            _context.Dishes
+                .Where(d => d.Id == id)
+                .Select(d => d.Description)
+                .FirstOrDefaultAsync();
+
         public async Task<List<Dish>> GetDishesByTypeAndPagingInfoAsync(
             long? dishTypeId, PagingInfo pagInfo)
         {
             return await _context.Dishes
                 .Where(d => dishTypeId == null || d.DishTypeId == dishTypeId)
+                .OrderBy(d => d.Name)
                 .Skip((pagInfo.CurrentPage - 1) * pagInfo.ItemsPerPage)
                 .Take(pagInfo.ItemsPerPage)
+                .Select(d => new Dish() 
+                    {
+                        Id = d.Id,
+                        Name = d.Name,
+                        DishTypeId = d.DishTypeId,
+                        Price = d.Price,
+                        ImageId = d.ImageId
+                    })
                 .ToListAsync();
         }
 

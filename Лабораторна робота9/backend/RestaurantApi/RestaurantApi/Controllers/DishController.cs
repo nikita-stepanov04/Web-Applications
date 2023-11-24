@@ -33,7 +33,6 @@ namespace RestaurantApi.Controllers
         public async Task<IActionResult> GetDishes(
             long? type = null, int page = 1, int perPage = 6)
         {
-            await Console.Out.WriteLineAsync($"type: {type}, page: {page}, perpage: {perPage}");
             PagingInfo pagInfo = new()
             {
                 CurrentPage = page,
@@ -43,33 +42,39 @@ namespace RestaurantApi.Controllers
             List<Dish> dishes = await _dishRepository
                 .GetDishesByTypeAndPagingInfoAsync(type, pagInfo);
 
-            List<DishBindingTarget> dishBindingTargets = new();
-            IUrlHelper helper = _urlHelperFactory.GetUrlHelper(ControllerContext);
-            foreach (var dish in dishes)
-            {
-                dishBindingTargets.Add(new DishBindingTarget()
-                {
-                    Id = dish.Id,
-                    Name = dish.Name,
-                    Description = dish.Description,
-                    Price = dish.Price,
-                    ImageUrl = helper.Action(
-                        controller: "Dish",
-                        action: "GetImage",
-                        values: new { id = dish.ImageId },
-                        protocol: Request.Scheme)
-                });
-            }
-
-            pagInfo.TotalPages = await 
-                _dishRepository.GetTotalPagesAsync(type, pagInfo);
+            var dishBindingTargets = dishes.Select(d => ToDishBindingTarget(d));
             
+            pagInfo.TotalPages = await
+                _dishRepository.GetTotalPagesAsync(type, pagInfo);
+
             return Ok(new
             {
                 dishes = dishBindingTargets,
                 paginationInfo = pagInfo
             });
         }
+
+        [HttpGet("{id:long}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetDishById(long id)
+        {
+            Dish? dish = await _dishRepository.GetDishById(id);
+            return dish != null
+                ? Ok(ToDishBindingTarget(dish))
+                : NotFound($"Dish with id: {id} was not found");
+        }
+
+        [HttpGet("description-for/{id:long}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetDishDescriptionById(long id)
+        {
+            string? dishDescripiton = await _dishRepository.GetDishDescriptionById(id);
+            return dishDescripiton != null
+                ? Ok(dishDescripiton)
+                : NotFound($"Dish with id: {id} was not found");
+        }        
 
         [HttpGet("image/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -88,5 +93,23 @@ namespace RestaurantApi.Controllers
         [HttpGet("types")]
         public IAsyncEnumerable<DishType> GetTypes() =>
             _dishTypesRepository.DishTypes.AsAsyncEnumerable();
+
+        private DishBindingTarget ToDishBindingTarget(Dish dish)
+        {
+            IUrlHelper helper = _urlHelperFactory.GetUrlHelper(ControllerContext);
+            DishBindingTarget target = new()
+            {
+                Id = dish.Id,
+                Name = dish.Name,
+                Price = dish.Price,
+                Description = dish.Description,
+                ImageUrl = helper.Action(
+                        controller: "Dish",
+                        action: "GetImage",
+                        values: new { id = dish.ImageId },
+                        protocol: Request.Scheme)
+            };
+            return target;
+        }
     }
 }

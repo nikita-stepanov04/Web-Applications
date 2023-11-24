@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using RestaurantApi.Models.IdentityContext;
-using System.Text.Json;
 
 namespace RestaurantApi.Models.DataContext
 {
     public static class SeedIdentity
-    { 
+    {
         public static async void SeedDatabase(IApplicationBuilder app, IConfiguration config)
-        { 
+        {
             string? adminEmail = config["AdminSettings:AdminEmail"];
             string? adminPassword = config["AdminSettings:AdminPassword"];
 
@@ -37,12 +36,10 @@ namespace RestaurantApi.Models.DataContext
                             Email = adminEmail,
                             UserName = adminEmail
                         };
-                        await Console.Out.WriteLineAsync(JsonSerializer.Serialize(user));
-                        var result = await userManager.CreateAsync(user, adminPassword);
-                        var result1 = await userManager.AddToRoleAsync(user, UserRoles.Admin);
-                        await Console.Out.WriteLineAsync($"\n\n----{result}, {result1}--------\n\n");
-                    }                  
-                    
+                        await userManager.CreateAsync(user, adminPassword);
+                        await userManager.AddToRoleAsync(user, UserRoles.Admin);
+                    }
+
                 }
             }
             else

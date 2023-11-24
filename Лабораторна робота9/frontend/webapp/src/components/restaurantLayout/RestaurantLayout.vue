@@ -1,4 +1,5 @@
 <template>
+  <dismissible-alert ref="dismissibleAlert"></dismissible-alert>
   <restaurant-header
       @toggleNavbar="toggleNavbar"
       @changeCategoryTo="id => toMenu(id)"
@@ -38,13 +39,15 @@ import RestaurantHeader from "@/components/restaurantLayout/RestaurantHeader.vue
 import RestaurantNavbar from "@/components/restaurantLayout/RestaurantNavbar.vue";
 import RestaurantFooter from "@/components/restaurantLayout/RestaurantFooter.vue";
 import PaginationComponent from "@/components/UI/PaginationComponent.vue";
+import DismissibleAlert from "@/components/UI/DismissibleAlert.vue";
 
 export default {
   components: {
     PaginationComponent,
     RestaurantFooter,
     RestaurantNavbar,
-    RestaurantHeader
+    RestaurantHeader,
+    DismissibleAlert
   },
 
   props: {

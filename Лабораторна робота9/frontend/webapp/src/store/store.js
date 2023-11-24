@@ -57,16 +57,17 @@ export default createStore({
                 state.orders = cart;
             }
         },
-        buy(state, dishId) {
+        buy(state, {dishId, quantity}) {
+            console.log('quantity from store: ', quantity)
             let orders = state.orders;
             const order = orders.filter(o => o.dishId === dishId)[0];
             if (order != null) {
-                order.quantity++;
+                order.quantity += quantity ?? 1;
             } else {
                 const dish = state.dishes.filter(d => d.id === dishId)[0];
                 const order = {
                     dishId: dishId,
-                    quantity: 1,
+                    quantity: quantity ?? 1,
                     name: dish.name,
                     price: dish.price
                 }
@@ -130,7 +131,7 @@ export default createStore({
                 dispatch('updateUser', role);
                 return role;
             } catch (error) {
-                console.log('User is not authenticated');
+                return null;
             }
         },
 

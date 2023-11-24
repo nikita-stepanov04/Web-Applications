@@ -20,7 +20,7 @@
       <div class="sidebar-item">
         <router-link class="main-link" to="/cart">
           <font-awesome-icon :icon="['fas', 'cart-shopping']"/>
-          My orders
+          Cart
         </router-link>
       </div>
     </li>

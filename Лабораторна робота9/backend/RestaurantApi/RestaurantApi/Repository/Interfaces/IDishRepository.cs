@@ -10,6 +10,10 @@ namespace RestaurantApi.Repository.Interfaces
         Task<bool> AddDishAsync(Dish d);
         Task<bool> DeleteDishAsync(Dish d);
 
+        Task<Dish?> GetDishById(long id);
+
+        Task<string?> GetDishDescriptionById(long id);
+
         Task<List<Dish>> GetDishesByTypeAndPagingInfoAsync(
             long? dishTypeId, PagingInfo pagInfo);
 

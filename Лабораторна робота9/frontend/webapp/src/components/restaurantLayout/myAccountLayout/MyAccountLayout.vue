@@ -1,6 +1,5 @@
 <template>
   <div class="main-block orders mt-4 mx-sm-5 mb-5">
-    <dismissible-alert ref="dismissibleAlert"></dismissible-alert>
     <form action="#"
           @submit.prevent="submitForm"
           ref="regForm"
@@ -209,11 +208,10 @@
 <script>
 import helpers from "@/mixins/helpers";
 import request from "@/api/requestConstructor"
-import DismissibleAlert from "@/components/UI/DismissibleAlert.vue";
 
 export default {
   mixins: [helpers, request],
-  components: {DismissibleAlert},
+  emits: ['alert'],
 
   data() {
     return {
@@ -223,32 +221,30 @@ export default {
   },
   methods: {
     async submitForm() {
-      const alert = this.$refs.dismissibleAlert;
       if (this.validateForm()) {
         if (this.user.newPassword && !this.user.currentPassword) {
-          alert.alert('alert-danger', 'Enter currant password')
+          this.alertDanger('Enter currant password')
         } else {
           if (JSON.stringify(this.user) !== JSON.stringify(this.userCopy)) {
             try {
               await request.put('auth/edit-user', this.user, true)
               this.userCopy = Object.assign({}, this.user);
-              alert.alert('alert-success', 'Changes were applied')
+              this.alertSuccess('Changes were applied')
             } catch (error) {
-              alert.alert('alert-danger', 'Failed to apply changes');
+              this.alertDanger('Failed to apply changes');
             }
           } else {
-            alert.alert('alert-warning', 'Nothing changed');
+            this.alertWarning('Nothing changed');
           }
         }
       }
     },
     async discardChanges() {
-      const alert = this.$refs.dismissibleAlert;
       if (JSON.stringify(this.user) !== JSON.stringify(this.userCopy)) {
         await this.getUserData();
-        alert.alert('alert-success', 'Changes were discard')
+        this.alertSuccess('Changes were discard')
       } else {
-        alert.alert('alert-warning', 'Nothing changed');
+        this.alertWarning('Nothing changed');
       }
     },
     logout() {
@@ -256,15 +252,13 @@ export default {
       this.$router.push('/menu');
     },
     async getUserData() {
-      const alert = this.$refs.dismissibleAlert;
       try {
         const data = (await request.get('auth/user-info', {}, true)).data;
         data.birthday = data.birthday.split('T')[0] // get rid of time part
         this.user = data;
         this.userCopy = Object.assign({}, data)
       } catch (error) {
-        alert.alert('alert-danger',
-            'Something went wrong, can not load user data');
+        this.alertDanger('Something went wrong, can not load user data');
       }
     }
   },

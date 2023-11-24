@@ -31,6 +31,7 @@
     },
     methods: {
       alert(alertType, message) {
+        console.log('alert')
         this.showAlert = true;
         this.alertType = alertType;
         this.message = message;

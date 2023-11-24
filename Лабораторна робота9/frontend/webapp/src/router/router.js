@@ -5,6 +5,8 @@ import CartPage from "@/pages/CartPage.vue";
 import RegistrationPage from "@/pages/RegistrationPage.vue";
 import LoginPage from "@/pages/LoginPage.vue";
 import MyAccountPage from "@/pages/MyAccountPage.vue";
+import DishPage from "@/pages/DishPage.vue";
+import OrderPage from "@/pages/OrderPage.vue";
 
 const routes = [
     {
@@ -19,10 +21,25 @@ const routes = [
         }
     },
     {
+        path: '/menu/:id',
+        name: 'dish',
+        meta: {
+            title: 'Dish'
+        },
+        component: DishPage,
+    },
+    {
         path: '/cart',
         component: CartPage,
         meta: {
             title: 'Cart'
+        }
+    },
+    {
+        path: '/order',
+        component: OrderPage,
+        meta: {
+            title: 'Order'
         }
     },
     {
@@ -56,7 +73,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-    document.title = to.meta?.title || '';
+    document.title = to.meta?.title || 'Title';
     if (to.matched.some(route => route.meta.authRequired)) {
         const isAdminPage = to.matched.some(route => route.meta.adminPage);
         const user = store.state.userAuthenticationRole

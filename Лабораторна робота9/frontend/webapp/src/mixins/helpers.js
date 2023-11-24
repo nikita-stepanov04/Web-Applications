@@ -26,6 +26,22 @@ export default {
             const month = String(date.getMonth() + 1).padStart(2, '0');
             const day = String(date.getDate()).padStart(2, '0');
             dateInput.max = year + '-' + month + '-' + day;
+        },
+        buyAnimation() {
+            const cart = document.getElementById('cart');
+            cart.classList.add('shake-animation');
+            setTimeout(() => {
+                cart.classList.remove("shake-animation");
+            }, 500)
+        },
+        alertDanger(message) {
+            this.$parent.$refs.dismissibleAlert.alert('alert-danger', message);
+        },
+        alertWarning(message) {
+            this.$parent.$refs.dismissibleAlert.alert('alert-warning', message);
+        },
+        alertSuccess(message) {
+            this.$parent.$refs.dismissibleAlert.alert('alert-success', message);
         }
     }
 }
