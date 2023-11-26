@@ -11,7 +11,7 @@
     <div class="d-flex">
       <div class="sidebar hiding hidden" ref="sidebar">
         <restaurant-navbar
-            @changeCategoryTo="id => toMenu(id)"
+            @changeCategoryTo="id => toMenu({id: id})"
             :dish-types="$store.state.dishTypes"
         >
         </restaurant-navbar>
