@@ -22,7 +22,7 @@
 
         <a class="navbar-brand align-self-end ms-3 me-auto mb-lg-0" href="#"
            v-if="!titleHidden">
-          <img src="@/assets/icons/logo.png"
+          <img src="../../../public/logo.png"
                width="30" height="29"
                alt="logo">
           <span class="fw-semibold">Restaurant</span>

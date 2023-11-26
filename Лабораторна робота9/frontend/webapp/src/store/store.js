@@ -57,8 +57,11 @@ export default createStore({
                 state.orders = cart;
             }
         },
+        clearCart(state) {
+            state.orders = [];
+            state.cookies.set('orders', [], { expires: new Date(0) });
+        },
         buy(state, {dishId, quantity}) {
-            console.log('quantity from store: ', quantity)
             let orders = state.orders;
             const order = orders.filter(o => o.dishId === dishId)[0];
             if (order != null) {

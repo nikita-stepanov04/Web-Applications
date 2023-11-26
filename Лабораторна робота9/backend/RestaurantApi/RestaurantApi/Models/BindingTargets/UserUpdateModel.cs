@@ -35,6 +35,6 @@ namespace RestaurantApi.Models.BindingTargets
         public string? Street { get; set; }
 
         [Range(1, int.MaxValue)]
-        public int? Flat { get; set; }
+        public int? HouseNumber { get; set; }
     }
 }

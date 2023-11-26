@@ -6,6 +6,18 @@ export default {
             return '₴ ' + price.toFixed(2)
                 .replace(/\d(?=(\d{3})+\.)/g, '$&');
         },
+        formatDate(date) {
+            const dateObject = new Date(date);
+            const options = {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+            };
+            return new Intl.DateTimeFormat("ru-Ru", options).format(dateObject);
+        },
         validateForm() {
             const form = this.$refs.regForm;
             if (form.checkValidity()) {
@@ -42,6 +54,18 @@ export default {
         },
         alertSuccess(message) {
             this.$parent.$refs.dismissibleAlert.alert('alert-success', message);
+        },
+        colorByNumber(n) {
+            const colors = [
+                '#2165ff',
+                '#2ecc71',
+                '#ff1700',
+                '#eec128',
+                '#1cd4ff',
+                '#ff841f',
+                '#c81cff'
+            ]
+            return colors[n % 7];
         }
     }
 }

@@ -179,16 +179,16 @@
         </div>
         <div class="col-sm-6 col-xs-12">
           <div class="mb-3">
-            <label for="flat" class="form-label">Flat</label>
+            <label for="houseNumber" class="form-label">House Number</label>
             <input class="form-control"
-                   v-model="user.flat"
+                   v-model="user.houseNumber"
                    type="number"
-                   id="flat"
-                   placeholder="Enter flat"
+                   id="houseNumber"
+                   placeholder="Enter houseNumber"
                    min="1"
             >
             <div class="invalid-feedback">
-              Please enter flat
+              Please enter house number
             </div>
           </div>
         </div>
@@ -211,7 +211,6 @@ import request from "@/api/requestConstructor"
 
 export default {
   mixins: [helpers, request],
-  emits: ['alert'],
 
   data() {
     return {

@@ -41,12 +41,20 @@
       </div>
       <div class="d-grid my-4">
         <button class="btn btn-primary" type="submit">Log in</button>
-        <router-link
-            to="/register"
-            class="link-secondary text-center mt-2"
-        >
-          Register
-        </router-link>
+        <div class="d-flex">
+          <router-link
+              to="/register"
+              class="link-secondary mt-2 me-2 flex-grow-1 text-end"
+          >
+            Register
+          </router-link>
+          <router-link
+              to="/menu"
+              class="link-secondary mt-2 ms-2 flex-grow-1 text-start"
+          >
+            To menu
+          </router-link>
+        </div>
       </div>
     </form>
   </blue-gradient-layout>

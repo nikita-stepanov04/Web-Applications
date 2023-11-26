@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     buy(id) {
-      this.$emit('buy', id);
+      this.$emit('buy', {dishId: id});
       this.buyAnimation();
     }
   }

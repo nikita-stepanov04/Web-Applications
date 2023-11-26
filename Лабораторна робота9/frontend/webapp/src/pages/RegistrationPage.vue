@@ -118,7 +118,7 @@
           <div class="mb-3">
             <label class="form-label" for="phone">Enter your phone</label>
             <input class="form-control phone-input"
-                   v-model="registrant.phone"
+                   v-model="registrant.phoneNumber"
                    id="phone"
                    ref="phone"
                    type="tel"
@@ -133,12 +133,20 @@
       </div>
       <div class="d-grid my-4">
         <button class="btn btn-primary" type="submit">Register</button>
-        <router-link
-            to="/login"
-            class="link-secondary text-center mt-2"
-        >
-          Log in
-        </router-link>
+        <div class="d-flex">
+          <router-link
+              to="/login"
+              class="link-secondary mt-2 me-2 flex-grow-1 text-end"
+          >
+            Log in
+          </router-link>
+          <router-link
+              to="/menu"
+              class="link-secondary mt-2 ms-2 flex-grow-1 text-start"
+          >
+            To menu
+          </router-link>
+        </div>
       </div>
     </form>
   </blue-gradient-layout>
@@ -163,7 +171,7 @@ export default {
         password: '',
         gender: '',
         birthday: '',
-        phone: '',
+        phoneNumber: '',
       }
     }
   },

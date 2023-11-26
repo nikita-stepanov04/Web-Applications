@@ -26,9 +26,9 @@
     </li>
     <li>
       <div class="sidebar-item">
-        <router-link class="main-link" to="/">
-          <font-awesome-icon :icon="['fas', 'address-book']"/>
-          Contacts
+        <router-link class="main-link" to="/orders">
+          <font-awesome-icon :icon="['fas', 'truck']" />
+          My orders
         </router-link>
       </div>
     </li>

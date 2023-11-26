@@ -37,7 +37,7 @@ namespace RestaurantApi.Models.BindingTargets
         public string? Street { get; set; }
 
         [Range(1, int.MaxValue)]
-        public int? Flat { get; set; }
+        public int? HouseNumber { get; set; }
 
         public RestaurantUser ToRestaurantUser() =>
             new RestaurantUser()
@@ -51,7 +51,7 @@ namespace RestaurantApi.Models.BindingTargets
                 Gender = this.Gender,
                 City = this.City,
                 Street = this.Street,
-                Flat = this.Flat
+                HouseNumber = this.HouseNumber
             };
     }
 }

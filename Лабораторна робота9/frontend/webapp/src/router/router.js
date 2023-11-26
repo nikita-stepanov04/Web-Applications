@@ -7,6 +7,7 @@ import LoginPage from "@/pages/LoginPage.vue";
 import MyAccountPage from "@/pages/MyAccountPage.vue";
 import DishPage from "@/pages/DishPage.vue";
 import OrderPage from "@/pages/OrderPage.vue";
+import OrdersPage from "@/pages/OrdersPage.vue";
 
 const routes = [
     {
@@ -40,6 +41,14 @@ const routes = [
         component: OrderPage,
         meta: {
             title: 'Order'
+        }
+    },
+    {
+        path: '/orders',
+        component: OrdersPage,
+        meta: {
+            title: 'Orders',
+            authRequired: true
         }
     },
     {

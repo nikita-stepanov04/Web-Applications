@@ -13,7 +13,7 @@ namespace RestaurantApi.Models.IdentityContext
         public string? Gender { get; set; }
         public string? City { get; set; }
         public string? Street { get; set; }
-        public int? Flat { get; set; }
+        public int? HouseNumber { get; set; }
 
         public UserModel ToUserModel() =>
             new()
@@ -26,7 +26,7 @@ namespace RestaurantApi.Models.IdentityContext
                 Gender = this.Gender,
                 City = this.City,
                 Street = this.Street,
-                Flat = this.Flat
+                HouseNumber = this.HouseNumber
             };
 
         public void UpdateFromUserModel(UserUpdateModel userModel)
@@ -38,7 +38,7 @@ namespace RestaurantApi.Models.IdentityContext
             this.Birthday = userModel.Birthday;
             this.City = userModel.City;
             this.Street = userModel.Street;
-            this.Flat = userModel.Flat;
+            this.HouseNumber = userModel.HouseNumber;
         }
 
     }    

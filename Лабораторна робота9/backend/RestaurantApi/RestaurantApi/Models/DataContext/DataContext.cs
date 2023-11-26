@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestaurantApi.Models.DishModels;
+using RestaurantApi.Models.OrderModels;
 
 namespace RestaurantApi.Models.DataContext
 {
@@ -11,5 +12,7 @@ namespace RestaurantApi.Models.DataContext
         public DbSet<Dish> Dishes => Set<Dish>();
         public DbSet<DishType> DishTypes => Set<DishType>();
         public DbSet<Image> Images => Set<Image>();
+        public DbSet<Order> Orders => Set<Order>();
+        public DbSet<CartLine> CartLines => Set<CartLine>();
     }
 }
