@@ -37,32 +37,66 @@ namespace RestaurantApi.Repository.Implementations
                 .Select(d => d.Description)
                 .FirstOrDefaultAsync();
 
-        public async Task<List<Dish>> GetDishesByTypeAndPagingInfoAsync(
+        public async Task<List<Dish>> GetDishesBySubstringAsync(
+            string substring, PagingInfo pagInfo)
+        {
+            substring = substring.Trim();
+
+            IQueryable<Dish> dishesBySubstring = _context.Dishes
+                .Where(d => 
+                    d.Name!.Contains(substring) || 
+                    d.Description!.Contains(substring));
+
+            return await 
+                SelectByPagingInfo(dishesBySubstring, pagInfo)
+                .ToListAsync();
+        }
+
+        public async Task<List<Dish>> GetDishesByTypeAsync(
             long? dishTypeId, PagingInfo pagInfo)
         {
-            return await _context.Dishes
-                .Where(d => dishTypeId == null || d.DishTypeId == dishTypeId)
-                .OrderBy(d => d.Name)
-                .Skip((pagInfo.CurrentPage - 1) * pagInfo.ItemsPerPage)
-                .Take(pagInfo.ItemsPerPage)
-                .Select(d => new Dish() 
-                    {
-                        Id = d.Id,
-                        Name = d.Name,
-                        DishTypeId = d.DishTypeId,
-                        Price = d.Price,
-                        ImageId = d.ImageId
-                    })
+            IQueryable<Dish> dishesByType = _context.Dishes
+                .Where(d => dishTypeId == null || d.DishTypeId == dishTypeId);
+
+            return await 
+                SelectByPagingInfo(dishesByType, pagInfo)
                 .ToListAsync();
         }
 
         public async Task<int> GetTotalPagesAsync(
-            long? dishTypeId, PagingInfo pagInfo)
+            long? dishTypeId, string? substring, PagingInfo pagInfo)
         {
-            return (int)Math.Ceiling((decimal)
-                await _context.Dishes.CountAsync(d =>
-                    dishTypeId == null || d.DishTypeId == dishTypeId) /
-                        pagInfo.ItemsPerPage);
+            int count = 0;
+            if (substring == null)
+            {
+                count = await _context.Dishes.CountAsync(d =>
+                    dishTypeId == null || d.DishTypeId == dishTypeId);
+            }
+            else
+            {
+                substring = substring.Trim();
+                count = await _context.Dishes.CountAsync(d =>
+                    d.Name!.Contains(substring) || 
+                    d.Description!.Contains(substring));
+            }
+            return (int)Math.Ceiling((decimal) count / pagInfo.ItemsPerPage);                
+        }
+
+        private IQueryable<Dish> SelectByPagingInfo(
+            IQueryable<Dish> dishes, PagingInfo pagInfo)
+        {
+            return dishes
+                .OrderBy(d => d.Name)
+                .Skip((pagInfo.CurrentPage - 1) * pagInfo.ItemsPerPage)
+                .Take(pagInfo.ItemsPerPage)
+                .Select(d => new Dish()
+                {
+                    Id = d.Id,
+                    Name = d.Name,
+                    DishTypeId = d.DishTypeId,
+                    Price = d.Price,
+                    ImageId = d.ImageId
+                });
         }
     }
 }

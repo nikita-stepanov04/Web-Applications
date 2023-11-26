@@ -2,8 +2,8 @@
   <dismissible-alert ref="dismissibleAlert"></dismissible-alert>
   <restaurant-header
       @toggleNavbar="toggleNavbar"
-      @changeCategoryTo="id => toMenu(id)"
-      @search="(args) => console.log(args)"
+      @changeCategoryTo="id => toMenu({id: id})"
+      @search="substring => toMenu({substring: substring})"
       :dish-types="$store.state.dishTypes"
   >
   </restaurant-header>
@@ -68,8 +68,10 @@ export default {
           ? sidebar?.classList?.add('hidden')
           : sidebar?.classList?.remove('hidden');
     },
-    toMenu(id) {
-      this.$store.dispatch('fetchDishes', {dishTypeId: id});
+    toMenu({id, substring}) {
+      this.$store.dispatch('fetchDishes', !substring
+        ? {dishTypeId: id}
+        : {substring: substring});
       this.$router.push('/menu');
     }
   }

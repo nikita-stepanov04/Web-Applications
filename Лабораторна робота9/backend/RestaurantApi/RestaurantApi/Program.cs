@@ -41,7 +41,7 @@ namespace RestaurantApi
                 });
 
             builder.Services.AddResponseCaching();
-            builder.Services.AddMemoryCache();
+            builder.Services.AddDistributedMemoryCache();
 
             builder.Services.AddCors(opts =>
             {

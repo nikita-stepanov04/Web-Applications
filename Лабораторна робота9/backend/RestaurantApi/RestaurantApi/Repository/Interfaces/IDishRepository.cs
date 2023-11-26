@@ -14,9 +14,12 @@ namespace RestaurantApi.Repository.Interfaces
 
         Task<string?> GetDishDescriptionById(long id);
 
-        Task<List<Dish>> GetDishesByTypeAndPagingInfoAsync(
+        Task<List<Dish>> GetDishesByTypeAsync(
             long? dishTypeId, PagingInfo pagInfo);
 
-        Task<int> GetTotalPagesAsync(long? dishTypeId, PagingInfo pagInfo);
+        Task<List<Dish>> GetDishesBySubstringAsync(
+            string substring, PagingInfo pagInfo);
+
+        Task<int> GetTotalPagesAsync(long? dishTypeId, string? substring, PagingInfo pagInfo);
     }
 }

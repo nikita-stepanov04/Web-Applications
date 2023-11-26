@@ -31,7 +31,7 @@ namespace RestaurantApi.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetDishes(
-            long? type = null, int page = 1, int perPage = 6)
+            long? type = null, string? substring = null, int page = 1, int perPage = 6)
         {
             PagingInfo pagInfo = new()
             {
@@ -39,13 +39,15 @@ namespace RestaurantApi.Controllers
                 ItemsPerPage = perPage
             };
 
-            List<Dish> dishes = await _dishRepository
-                .GetDishesByTypeAndPagingInfoAsync(type, pagInfo);
-
+            List<Dish> dishes = new();
+            dishes = substring == null
+                ? await _dishRepository.GetDishesByTypeAsync(type, pagInfo)
+                : await _dishRepository.GetDishesBySubstringAsync(substring, pagInfo);
+            
             var dishBindingTargets = dishes.Select(d => ToDishBindingTarget(d));
             
             pagInfo.TotalPages = await
-                _dishRepository.GetTotalPagesAsync(type, pagInfo);
+                _dishRepository.GetTotalPagesAsync(type, substring, pagInfo);
 
             return Ok(new
             {

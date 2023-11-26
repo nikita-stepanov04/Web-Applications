@@ -144,12 +144,13 @@ export default createStore({
                 .catch(error => console.log("Error: ", error.message));
         },
 
-        async fetchDishes({commit, state}, {dishTypeId, currentPage}) {
+        async fetchDishes({commit, state}, {dishTypeId, substring, currentPage}) {
             dishTypeId = dishTypeId ?? state.chosenDishTypeId;
             dishTypeId = dishTypeId === 0 ? null : dishTypeId;
             commit('updateChosenDishTypeId', dishTypeId);
             const params = {
                 type: dishTypeId,
+                substring: substring,
                 page: currentPage ?? 1,
                 perPage: state.dishesPagingInfo.itemsPerPage ?? 6
             }
