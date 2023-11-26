@@ -34,15 +34,7 @@
     </li>
     <li>
       <div class="sidebar-item">
-        <router-link class="main-link" to="/">
-          <font-awesome-icon :icon="['fas', 'circle-info']"/>
-          FAQ
-        </router-link>
-      </div>
-    </li>
-    <li>
-      <div class="sidebar-item">
-        <router-link class="main-link" to="/">
+        <router-link class="main-link" to="/schedule">
           <font-awesome-icon :icon="['fas', 'calendar-days']"/>
           Schedule
         </router-link>

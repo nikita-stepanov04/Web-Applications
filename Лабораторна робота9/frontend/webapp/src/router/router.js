@@ -8,6 +8,7 @@ import MyAccountPage from "@/pages/MyAccountPage.vue";
 import DishPage from "@/pages/DishPage.vue";
 import OrderPage from "@/pages/OrderPage.vue";
 import OrdersPage from "@/pages/OrdersPage.vue";
+import SchedulePage from "@/pages/SchedulePage.vue";
 
 const routes = [
     {
@@ -71,6 +72,13 @@ const routes = [
         meta: {
             title: 'My account',
             authRequired: true
+        }
+    },
+    {
+        path: '/schedule',
+        component: SchedulePage,
+        meta: {
+            title: 'Schedule'
         }
     },
 

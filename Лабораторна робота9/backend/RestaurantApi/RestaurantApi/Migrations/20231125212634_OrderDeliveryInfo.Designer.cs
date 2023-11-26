@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestaurantApi.Models.DataContext;
 
@@ -11,9 +12,11 @@ using RestaurantApi.Models.DataContext;
 namespace RestaurantApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231125212634_OrderDeliveryInfo")]
+    partial class OrderDeliveryInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,7 +138,7 @@ namespace RestaurantApi.Migrations
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("HouseNumber")
+                    b.Property<int?>("Flat")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsCompleted")
@@ -159,47 +162,6 @@ namespace RestaurantApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("RestaurantApi.Models.SheduleModels.Schedule", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Friday")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Monday")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Saturday")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Sunday")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Thursday")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Tuesday")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Wednesday")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Schedule");
                 });
 
             modelBuilder.Entity("RestaurantApi.Models.DishModels.Dish", b =>

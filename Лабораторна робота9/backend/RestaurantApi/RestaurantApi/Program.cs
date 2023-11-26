@@ -20,9 +20,7 @@ namespace RestaurantApi
 
             builder.Services.AddDbContext<IdentityContext>(opts =>
                 opts.UseSqlServer(builder.Configuration["ConnectionStrings:IdentityConnection"]));
-
-            builder.Services.AddResponseCaching();
-            builder.Services.AddMemoryCache();
+            
             builder.Services.AddIdentity<RestaurantUser, IdentityRole>(opts =>
             {
                 opts.User.RequireUniqueEmail = true;
@@ -32,7 +30,8 @@ namespace RestaurantApi
             builder.Services.AddScoped<IDishRepository, EfDishRepository>();
             builder.Services.AddScoped<IDishTypesRepository, EfDishTypesRepository>();
             builder.Services.AddScoped<IImageRepository, EfImageRepository>();           
-            builder.Services.AddScoped<IOrderRepository, EFOrderRepository>();           
+            builder.Services.AddScoped<IOrderRepository, EFOrderRepository>();
+            builder.Services.AddScoped<IScheduleRepository, EfScheduleRepository>();
 
             builder.Services.AddControllers()
                 .AddNewtonsoftJson(opts =>
@@ -40,6 +39,9 @@ namespace RestaurantApi
                     opts.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                     opts.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
+
+            builder.Services.AddResponseCaching();
+            builder.Services.AddMemoryCache();
 
             builder.Services.AddCors(opts =>
             {

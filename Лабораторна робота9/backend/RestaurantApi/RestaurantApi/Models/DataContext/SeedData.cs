@@ -1,4 +1,5 @@
 ﻿using RestaurantApi.Models.DishModels;
+using RestaurantApi.Models.SheduleModels;
 
 namespace RestaurantApi.Models.DataContext
 {
@@ -6,10 +7,27 @@ namespace RestaurantApi.Models.DataContext
     {
         private const string ImagePath = "Models/DataContext/SeedPhotos";
 
-        public static void SeedDatabase(IApplicationBuilder app)
+        public static async void SeedDatabase(IApplicationBuilder app)
         {
             var context = app.ApplicationServices.CreateScope()
                 .ServiceProvider.GetRequiredService<DataContext>();
+
+            if (!context.Schedule.Any())
+            {
+                Schedule schedule = new()
+                {
+                    Monday = "08:00 - 21:00",
+                    Tuesday = "08:00 - 21:00",
+                    Wednesday = "08:00 - 21:00",
+                    Thursday = "08:00 - 21:00",
+                    Friday = "08:00 - 21:00",
+                    Saturday = "08:00 - 19:00",
+                    Sunday = "08:00 - 19:00",
+                };
+                await context.Schedule.AddAsync(schedule);
+                await context.SaveChangesAsync();
+            }
+
 
             if (context.Dishes.Count() == 0
                 && context.Images.Count() == 0
@@ -20,7 +38,7 @@ namespace RestaurantApi.Models.DataContext
                 DishType salad = new() { Name = "Salad" };
                 DishType soup = new() { Name = "Soup" };
 
-                context.Dishes.AddRange(new List<Dish>()
+                await context.Dishes.AddRangeAsync(new List<Dish>()
                 {
                     new()
                     {
@@ -119,7 +137,7 @@ namespace RestaurantApi.Models.DataContext
                         }
                     }
                 });                
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
     }
