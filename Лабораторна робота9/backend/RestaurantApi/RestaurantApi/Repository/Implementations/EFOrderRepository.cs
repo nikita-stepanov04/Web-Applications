@@ -18,22 +18,25 @@ namespace RestaurantApi.Repository.Implementations
 
         public async Task<bool> AddOrderAsync(Order order)
         {
-            IEnumerable<long> dishIds = order.CartLines!
+            if (order.CartLines?.Any() ?? false)
+            {
+                IEnumerable<long> dishIds = order.CartLines!
                 .Select(line => line.DishId);
 
-            IEnumerable<Dish> dishes = _context.Dishes
-                .Where(d => dishIds.Contains(d.Id));
+                IEnumerable<Dish> dishes = _context.Dishes
+                    .Where(d => dishIds.Contains(d.Id));
 
-            if (dishes.Count() == dishIds.Count())
-            {
-                order.TotalPrice = dishes.Sum(dish =>
-                    dish.Price * order.CartLines.First(line =>
-                        line.DishId == dish.Id).Quantity);
+                if (dishes.Count() == dishIds.Count())
+                {
+                    order.TotalPrice = dishes.Sum(dish =>
+                        dish.Price * order.CartLines.First(line =>
+                            line.DishId == dish.Id).Quantity);
 
-                order.PurchaseDate = DateTime.Now;
+                    order.PurchaseDate = DateTime.Now;
 
-                await _context.Orders.AddAsync(order);
-                return await _context.SaveChangesAsync() > 0;
+                    await _context.Orders.AddAsync(order);
+                    return await _context.SaveChangesAsync() > 0;
+                }
             }
             return false;
         }
@@ -61,6 +64,8 @@ namespace RestaurantApi.Repository.Implementations
                 {
                     Id = o.Id,
                     UserId = o.UserId,
+                    CustomerName = o.CustomerName,
+                    CustomerSurname = o.CustomerSurname,
                     PurchaseDate = o.PurchaseDate,
                     TotalPrice = o.TotalPrice,
                     City = o.City,
@@ -78,7 +83,9 @@ namespace RestaurantApi.Repository.Implementations
                         }
                     })
 
-                });
+                })
+                .OrderBy(o => o.IsCompleted)
+                .ThenBy(o => o.PurchaseDate);
         }
 
     }

@@ -11,7 +11,10 @@
       </div>
       <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="d-grid align-self-end mb-2">
-          <router-link to="/order" class="btn btn-light m-2">Order</router-link>
+          <button @click="order" class="btn btn-light m-2"
+              :disabled="$store.state.orders.length === 0">
+            Order
+          </button>
           <router-link to="/menu" class="btn btn-secondary m-2">Back to dishes</router-link>
         </div>
       </div>
@@ -22,6 +25,14 @@
 <script>
 import helpers from "@/mixins/helpers"
 export default {
-  mixins: [helpers]
+  mixins: [helpers],
+
+  methods: {
+    order() {
+      if (this.$store.state.orders.length > 0) {
+        this.$router.push('/order');
+      }
+    }
+  }
 }
 </script>

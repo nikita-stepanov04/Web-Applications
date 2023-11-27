@@ -13,9 +13,9 @@
       <div class="row">
         <div class="col-sm-6 col-xs-12">
           <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
+            <label for="name" class="form-label">Customer Name</label>
             <input class="form-control"
-                   v-model="order.name"
+                   v-model="order.customerName"
                    id="name"
                    placeholder="Enter name"
                    pattern="^(?!.*\d.*\d)(?! +$)[\p{L}\s\-'\.]+"
@@ -28,9 +28,9 @@
         </div>
         <div class="col-sm-6 col-xs-12">
           <div class="mb-3">
-            <label for="surname" class="form-label">Surname</label>
+            <label for="surname" class="form-label">Customer Surname</label>
             <input class="form-control"
-                   v-model="order.surname"
+                   v-model="order.customerSurname"
                    id="surname"
                    placeholder="Enter surname"
                    pattern="^(?!.*\d.*\d)(?! +$)[\p{L}\s\-'\.]+"
@@ -163,8 +163,8 @@ export default {
     if (userRole) {
       const userInfo = (await request.get(
           'auth/user-info', {}, true)).data;
-      this.order.name = userInfo.name;
-      this.order.surname = userInfo.surname;
+      this.order.customerName = userInfo.name;
+      this.order.customerSurname = userInfo.surname;
       this.order.city = userInfo.city;
       this.order.street = userInfo.street;
       this.order.houseNumber = userInfo.houseNumber;

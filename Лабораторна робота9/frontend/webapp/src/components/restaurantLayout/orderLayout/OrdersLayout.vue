@@ -18,14 +18,15 @@
                 :data-bs-target="'#order-' + index"
                 aria-expanded="true"
                 :aria-controls="'order-' + index">
-            {{'Order dated: ' + formatDate(order.purchaseDate)}}
+            Order dated: {{formatDate(order.purchaseDate)}}
+            <is-checked-icon :condition="order.isCompleted" class="mx-2"/>
           </button>
         </h2>
         <div :id="'order-' + index"
              class="accordion-collapse collapse"
              :class="{
-              'show': index === 0
-           }"
+                'show': index === 0
+             }"
              data-bs-parent="#order-accordion">
           <div class="accordion-body">
             <div class="container-fluid">
@@ -40,6 +41,10 @@
                       <span class="ms-3">Order Info</span>
                     </h3>
                     <p class="my-0">
+                      <span class="fw-semibold">Customer: </span>
+                      {{order.customerName}} {{order.customerSurname}}
+                    </p>
+                    <p class="my-0">
                       <span class="fw-semibold">Delivery: </span>
                       {{order.city}}, {{order.street}}, {{order.houseNumber}}
                     </p>
@@ -52,12 +57,8 @@
                       {{ order.phoneNumber }}
                     </p>
                     <p class="my-0">
-                      <span class="fw-semibold">Is completed: </span>
-                      <font-awesome-icon :icon="
-                        order.isCompleted
-                          ? ['far', 'circle-check']
-                          : ['far', 'circle-xmark']"
-                        :class="order.isCompleted ? 'text-success' : 'text-danger'"/>
+                      <span class="fw-semibold">Completed: </span>
+                      <is-checked-icon :condition="order.isCompleted"/>
                     </p>
                     <p class="mt-2">
                       <span class="h5">Total: </span>
@@ -100,8 +101,10 @@
 <script>
 import helpers from "@/mixins/helpers";
 import request from "@/api/requestConstructor"
+import IsCheckedIcon from "@/components/UI/IsCheckedIcon.vue";
 
 export default {
+  components: {IsCheckedIcon},
   mixins: [helpers],
 
   data() {

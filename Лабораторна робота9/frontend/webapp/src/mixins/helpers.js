@@ -41,9 +41,9 @@ export default {
         },
         buyAnimation() {
             const cart = document.getElementById('cart');
-            cart.classList.add('shake-animation');
+            cart?.classList.add('shake-animation');
             setTimeout(() => {
-                cart.classList.remove("shake-animation");
+                cart?.classList.remove("shake-animation");
             }, 500)
         },
         alertDanger(message) {
