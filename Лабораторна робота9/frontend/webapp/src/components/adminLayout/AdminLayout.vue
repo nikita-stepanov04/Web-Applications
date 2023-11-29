@@ -36,6 +36,10 @@
             <router-link to="/admin/orders"
                class="nav-link active">Schedule</router-link>
           </li>
+          <li class="nav-item">
+            <router-link to="/menu"
+               class="nav-link active">Menu</router-link>
+          </li>
         </ul>
       </div>
     </div>

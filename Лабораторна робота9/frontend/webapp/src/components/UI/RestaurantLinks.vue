@@ -1,5 +1,13 @@
 <template>
   <ul>
+    <li v-if="admin">
+      <div class="sidebar-item">
+        <router-link class="main-link" to="/admin">
+          <font-awesome-icon :icon="['fas', 'user-shield']" />
+          Administration
+        </router-link>
+      </div>
+    </li>
     <li>
       <div class="sidebar-item">
         <router-link class="main-link" to="/my-account">
@@ -42,5 +50,18 @@
     </li>
   </ul>
 </template>
-<script setup>
+
+<script>
+
+export default {
+  data() {
+    return {
+      admin: false
+    }
+  },
+  created() {
+    this.admin = (this.$store.state.userAuthenticationRole
+        ?? this.$store.dispatch('checkUserAuthorization')) === 'Admin';
+  }
+}
 </script>
