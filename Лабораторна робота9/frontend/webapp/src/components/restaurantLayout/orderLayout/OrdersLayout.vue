@@ -116,7 +116,6 @@ export default {
     try {
       this.orders = (await request.get(
           'orders', {}, true)).data;
-      console.log(this.orders)
     } catch (error) {
       this.alertDanger('Failed to load orders');
     }

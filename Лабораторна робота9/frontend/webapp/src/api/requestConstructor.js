@@ -18,4 +18,15 @@ export default {
             withCredentials: withCredentials
         })
     },
+    async delete(path, data, withCredentials) {
+        await axios.delete(this.url + path, {
+            data: data,
+            withCredentials: withCredentials
+        });
+    },
+    async patch(path, updateData, withCredentials) {
+        await axios.patch(this.url + path, updateData, {
+            withCredentials: withCredentials
+        });
+    }
 }

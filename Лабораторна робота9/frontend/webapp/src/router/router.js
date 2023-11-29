@@ -9,6 +9,8 @@ import DishPage from "@/pages/DishPage.vue";
 import OrderPage from "@/pages/OrderPage.vue";
 import OrdersPage from "@/pages/OrdersPage.vue";
 import SchedulePage from "@/pages/SchedulePage.vue";
+import AdminOrdersPage from "@/pages/adminPages/AdminOrdersPage.vue";
+import AdminEditOrderPage from "@/pages/adminPages/AdminEditOrderPage.vue";
 
 const routes = [
     {
@@ -79,6 +81,32 @@ const routes = [
         component: SchedulePage,
         meta: {
             title: 'Schedule'
+        }
+    },
+
+    // Admin pages
+
+    {
+        path: '/admin',
+        redirect: '/admin/orders'
+    },
+    {
+        path: '/admin/orders',
+        component: AdminOrdersPage,
+        meta: {
+            title: 'Orders',
+            authRequired: true,
+            adminPage: true
+        }
+    },
+    {
+        path: '/admin/edit/order/:id',
+        component: AdminEditOrderPage,
+        name: 'edit-order',
+        meta: {
+            title: 'Edit order',
+            authRequired: true,
+            adminPage: true
         }
     },
 

@@ -8,5 +8,6 @@ namespace RestaurantApi.Models.OrderModels
         public long DishId { get; set; }
         public Dish? Dish { get; set; }
         public int Quantity { get; set; } = 1;
+        public long OrderId { get; set; }
     }
 }

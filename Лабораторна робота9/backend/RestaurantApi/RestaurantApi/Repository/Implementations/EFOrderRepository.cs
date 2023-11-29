@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.EntityFrameworkCore;
 using RestaurantApi.Models.DataContext;
 using RestaurantApi.Models.DishModels;
 using RestaurantApi.Models.OrderModels;
 using RestaurantApi.Repository.Interfaces;
+using System.Text.Json;
 
 namespace RestaurantApi.Repository.Implementations
 {
@@ -45,6 +47,8 @@ namespace RestaurantApi.Repository.Implementations
         {
             return await GetAllOrders()
                 .Where(o => o.UserId == userId)
+                .OrderBy(o => o.IsCompleted)
+                .ThenByDescending(o => o.PurchaseDate)
                 .ToListAsync();
         }
 
@@ -52,7 +56,129 @@ namespace RestaurantApi.Repository.Implementations
         {
             return await GetAllOrders()
                 .Where(o => !o.IsCompleted)
+                .OrderBy(o => o.IsCompleted)
+                .ThenByDescending(o => o.PurchaseDate)
                 .ToListAsync();
+        }        
+
+        public async Task<bool> CompleteOrderAsync(long id)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            if (order != null)
+            {
+                order.IsCompleted = true;
+            }
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> RemoveOrderAsync(long id)
+        {
+            var order = await _context.Orders
+                .Include(o => o.CartLines)
+                .FirstOrDefaultAsync(o => o.Id == id);
+
+            if (order != null)
+            {
+                _context.RemoveRange(order.CartLines!);
+                _context.Remove(order);
+            }
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<Order?> GetOrderById(long id)
+        {
+            return await GetAllOrders()
+                .FirstOrDefaultAsync(o => o.Id == id);
+        }
+
+        public async Task<bool> RemoveCartLineFromOrderAsync(long lineId)
+        {
+            CartLine? cartLine = await _context.CartLines
+                .Where(l => l.Id == lineId)
+                .Include(l => l.Dish)
+                .FirstOrDefaultAsync();
+            await Console.Out.WriteLineAsync($"\n\n {JsonSerializer.Serialize(cartLine)} \n\n");
+            if (cartLine != null)
+            {
+                _context.CartLines.Remove(cartLine);
+                Order? order = await _context.Orders.FindAsync(cartLine.OrderId);
+                await Console.Out.WriteLineAsync($"\n\n {JsonSerializer.Serialize(order)} \n\n");
+                if (order != null)
+                {
+                    order.TotalPrice -= cartLine.Quantity * cartLine.Dish!.Price;
+                }
+            }
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> AddCartLineToOrderAsync(
+            long orderId, long dishId, int quantity)
+        {
+            Order? order = await _context.Orders
+                .Where(o => o.Id == orderId)
+                .Include(o => o.CartLines!)
+                    .ThenInclude(l => l.Dish)
+                .FirstOrDefaultAsync();
+
+            if (order != null && quantity >= 1)
+            {
+                Dish? dish = await _context.Dishes.FindAsync(dishId);
+                if (dish != null)
+                {
+                    List<CartLine> cartLines = order.CartLines!.ToList();
+                    CartLine? existingLine = cartLines
+                        .FirstOrDefault(line => line.DishId == dish.Id);
+
+                    if (existingLine != null)
+                    {
+                        existingLine.Quantity += quantity;
+                    }
+                    else
+                    {
+                        cartLines.Add(new CartLine()
+                        {
+                            Dish = dish,
+                            Quantity = quantity
+                        });
+                    }
+
+                    order.TotalPrice = cartLines
+                        .Sum(line => line.Quantity * line.Dish!.Price);
+                    order.CartLines = cartLines;                    
+                }
+            }
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> PatchOrderAsync(
+            JsonPatchDocument<Order> patchDoc, long orderId)
+        {
+            Order? order = await _context.Orders
+                .Where(o => o.Id == orderId)
+                .Include(o => o.CartLines!)
+                    .ThenInclude(l => l.Dish)
+                .FirstOrDefaultAsync();
+            if (order != null)
+            {
+                bool patchResult = true;
+                order.CartLines = order.CartLines!.ToList();
+                await Console.Out.WriteLineAsync($"\n\n {JsonSerializer.Serialize(order)} \n\n");
+                patchDoc.ApplyTo(order, (error) => Console.WriteLine(error.ErrorMessage));
+                if (!patchResult)
+                {
+                    return false;
+                }
+                await Console.Out.WriteLineAsync($"\n\n {JsonSerializer.Serialize(patchResult)} \n\n");
+                order.TotalPrice = order.CartLines!
+                    .Sum(line => line.Quantity * line.Dish!.Price);
+                await Console.Out.WriteLineAsync($"\n\n {JsonSerializer.Serialize(order)} \n\n");
+            }
+
+            var entry = _context.Entry(order);
+            Console.WriteLine($"Entity State: {entry.State}");
+
+
+            return await _context.SaveChangesAsync() > 0;
         }
 
         private IQueryable<Order> GetAllOrders()
@@ -75,18 +201,17 @@ namespace RestaurantApi.Repository.Implementations
                     IsCompleted = o.IsCompleted,
                     CartLines = o.CartLines!.Select(line => new CartLine
                     {
+                        Id = line.Id,
                         Quantity = line.Quantity,
                         Dish = new Dish
                         {
+                            Id = line.Dish.Id,
                             Name = line.Dish.Name,
                             Price = line.Dish.Price
                         }
                     })
 
-                })
-                .OrderBy(o => o.IsCompleted)
-                .ThenBy(o => o.PurchaseDate);
-        }
-
+                });
+        }        
     }
 }

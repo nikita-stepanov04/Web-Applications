@@ -15,8 +15,11 @@ namespace RestaurantApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddDbContext<DataContext>(opts =>            
-                opts.UseSqlServer(builder.Configuration["ConnectionStrings:RestaurantConnection"]));
+            builder.Services.AddDbContext<DataContext>(opts =>
+            {
+                opts.UseSqlServer(builder.Configuration["ConnectionStrings:RestaurantConnection"]);
+                opts.EnableSensitiveDataLogging();
+            });
 
             builder.Services.AddDbContext<IdentityContext>(opts =>
                 opts.UseSqlServer(builder.Configuration["ConnectionStrings:IdentityConnection"]));

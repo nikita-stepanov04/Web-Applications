@@ -1,33 +1,9 @@
 <template>
-
-  <!-- Modal -->
-  <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModal" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title fs-5" id="exampleModalLabel">Confirm</h3>
-        </div>
-        <div class="modal-body">
-          <div class="d-flex align-items-center">
-            <span class="flex-grow-1">
-              Remove <strong>{{ itemToRemoveName }}</strong> from cart?
-            </span>
-            <button type="button" class="btn btn-secondary me-2"
-                    data-bs-dismiss="modal">
-              No
-            </button>
-            <button type="button" class="btn btn-primary"
-                    data-bs-dismiss="modal"
-                    @click="remove">
-              Yes
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!--  Cart -->
+  <confirmation-modal
+      :modal-type="'delete'"
+      :item-to-confirm="itemToRemoveName"
+      @confirmation="remove">
+  </confirmation-modal>
 
   <h3 class="text-center my-2">My orders</h3>
   <div class="row orders">
@@ -71,10 +47,11 @@
 <script>
 import CartLine from "@/components/restaurantLayout/cartLayout/CartLine.vue";
 import CartSummary from "@/components/restaurantLayout/cartLayout/CartSummary.vue";
+import ConfirmationModal from "@/components/UI/ConfirmationModal.vue";
 import PaginationComponent from "@/components/UI/PaginationComponent.vue";
 
 export default {
-  components: {PaginationComponent, CartSummary, CartLine},
+  components: {PaginationComponent, CartSummary, CartLine, ConfirmationModal},
 
   data() {
     return {
@@ -86,6 +63,7 @@ export default {
     confirmRemove(args) {
       this.itemToRemoveId = args.id;
       this.itemToRemoveName = args.name;
+      console.log('item name from layout: ', this.itemToRemoveName)
     },
     remove() {
       this.$store.commit('removeDishFromCart', this.itemToRemoveId);
