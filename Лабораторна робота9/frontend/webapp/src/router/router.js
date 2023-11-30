@@ -11,6 +11,10 @@ import OrdersPage from "@/pages/OrdersPage.vue";
 import SchedulePage from "@/pages/SchedulePage.vue";
 import AdminOrdersPage from "@/pages/adminPages/AdminOrdersPage.vue";
 import AdminEditOrderPage from "@/pages/adminPages/AdminEditOrderPage.vue";
+import AdminDishesPage from "@/pages/adminPages/AdminDishesPage.vue";
+import AdminEditDishesPage from "@/pages/adminPages/AdminEditDishesPage.vue";
+import AdminAddDishPage from "@/pages/adminPages/AdminAddDishPage.vue";
+import AdminEditDishTypesPage from "@/pages/adminPages/AdminEditDishTypesPage.vue";
 
 const routes = [
     {
@@ -100,11 +104,48 @@ const routes = [
         }
     },
     {
+        path: '/admin/dishes',
+        component: AdminDishesPage,
+        meta: {
+            title: 'Dishes',
+            authRequired: true,
+            adminPage: true
+        }
+    },
+    {
         path: '/admin/edit/order/:id',
         component: AdminEditOrderPage,
         name: 'edit-order',
         meta: {
             title: 'Edit order',
+            authRequired: true,
+            adminPage: true
+        }
+    },
+    {
+        path: '/admin/edit/dish/:id',
+        component: AdminEditDishesPage,
+        name: 'edit-dish',
+        meta: {
+            title: 'Edit dish',
+            authRequired: true,
+            adminPage: true
+        }
+    },
+    {
+        path: '/admin/dish/add',
+        component: AdminAddDishPage,
+        meta: {
+            title: 'Add dish',
+            authRequired: true,
+            adminPage: true
+        }
+    },
+    {
+        path: '/admin/dish-types/edit',
+        component: AdminEditDishTypesPage,
+        meta: {
+            title: 'Edit dish types',
             authRequired: true,
             adminPage: true
         }

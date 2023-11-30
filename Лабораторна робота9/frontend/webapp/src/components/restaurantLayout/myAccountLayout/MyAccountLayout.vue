@@ -253,7 +253,7 @@ export default {
     async getUserData() {
       try {
         const data = (await request.get('auth/user-info', {}, true)).data;
-        data.birthday = data.birthday.split('T')[0] // get rid of time part
+        data.birthday = data.birthday?.split('T')[0] // get rid of time part
         this.user = data;
         this.userCopy = Object.assign({}, data)
       } catch (error) {

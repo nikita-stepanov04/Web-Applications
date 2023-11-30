@@ -43,9 +43,6 @@ namespace RestaurantApi
                     opts.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
 
-            builder.Services.AddResponseCaching();
-            builder.Services.AddDistributedMemoryCache();
-
             builder.Services.AddCors(opts =>
             {
                 opts.AddPolicy("Frontend", builder =>
@@ -72,8 +69,6 @@ namespace RestaurantApi
             });            
 
             var app = builder.Build();
-
-            app.UseResponseCaching();
 
             app.UseAuthentication();
             app.UseAuthorization();

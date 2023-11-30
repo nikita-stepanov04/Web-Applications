@@ -311,6 +311,9 @@ export default {
     } catch (error) {
       this.alertDanger('Failed to load order or dishes');
     }
+  },
+  mounted() {
+    this.addPhoneMask(this.$refs.phone)
   }
 }
 </script>

@@ -162,22 +162,14 @@ namespace RestaurantApi.Repository.Implementations
             {
                 bool patchResult = true;
                 order.CartLines = order.CartLines!.ToList();
-                await Console.Out.WriteLineAsync($"\n\n {JsonSerializer.Serialize(order)} \n\n");
-                patchDoc.ApplyTo(order, (error) => Console.WriteLine(error.ErrorMessage));
+                patchDoc.ApplyTo(order, (error) => patchResult = false);
                 if (!patchResult)
                 {
                     return false;
                 }
-                await Console.Out.WriteLineAsync($"\n\n {JsonSerializer.Serialize(patchResult)} \n\n");
                 order.TotalPrice = order.CartLines!
                     .Sum(line => line.Quantity * line.Dish!.Price);
-                await Console.Out.WriteLineAsync($"\n\n {JsonSerializer.Serialize(order)} \n\n");
             }
-
-            var entry = _context.Entry(order);
-            Console.WriteLine($"Entity State: {entry.State}");
-
-
             return await _context.SaveChangesAsync() > 0;
         }
 

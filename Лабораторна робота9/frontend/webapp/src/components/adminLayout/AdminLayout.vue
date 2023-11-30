@@ -25,15 +25,15 @@
                class="nav-link active">Orders</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/admin/orders"
+            <router-link to="/admin/dishes"
                class="nav-link active">Dishes</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/admin/orders"
+            <router-link to="/admin/dish-types/edit"
                class="nav-link active">DishTypes</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/admin/orders"
+            <router-link to="/admin/edit-shedule"
                class="nav-link active">Schedule</router-link>
           </li>
           <li class="nav-item">

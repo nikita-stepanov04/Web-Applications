@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.EntityFrameworkCore;
 using RestaurantApi.Models.BindingTargets;
 using RestaurantApi.Models.DataContext;
 using RestaurantApi.Models.DishModels;
@@ -28,8 +29,10 @@ namespace RestaurantApi.Repository.Implementations
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public Task<Dish?> GetDishById(long id) =>
-            _context.Dishes.FirstOrDefaultAsync(d => d.Id == id);
+        public Task<Dish?> GetDishByIdAsync(long id) =>
+            _context.Dishes.Where(d => d.Id == id)
+                .Include(d => d.DishType)
+                .FirstOrDefaultAsync();
 
         public Task<string?> GetDishDescriptionById(long id) =>
             _context.Dishes
@@ -43,11 +46,11 @@ namespace RestaurantApi.Repository.Implementations
             substring = substring.Trim();
 
             IQueryable<Dish> dishesBySubstring = _context.Dishes
-                .Where(d => 
-                    d.Name!.Contains(substring) || 
+                .Where(d =>
+                    d.Name!.Contains(substring) ||
                     d.Description!.Contains(substring));
 
-            return await 
+            return await
                 SelectByPagingInfo(dishesBySubstring, pagInfo)
                 .ToListAsync();
         }
@@ -58,7 +61,7 @@ namespace RestaurantApi.Repository.Implementations
             IQueryable<Dish> dishesByType = _context.Dishes
                 .Where(d => dishTypeId == null || d.DishTypeId == dishTypeId);
 
-            return await 
+            return await
                 SelectByPagingInfo(dishesByType, pagInfo)
                 .ToListAsync();
         }
@@ -76,10 +79,48 @@ namespace RestaurantApi.Repository.Implementations
             {
                 substring = substring.Trim();
                 count = await _context.Dishes.CountAsync(d =>
-                    d.Name!.Contains(substring) || 
+                    d.Name!.Contains(substring) ||
                     d.Description!.Contains(substring));
             }
-            return (int)Math.Ceiling((decimal) count / pagInfo.ItemsPerPage);                
+            return (int)Math.Ceiling((decimal)count / pagInfo.ItemsPerPage);
+        }
+
+        public async Task<bool> PatchDishByIdAsync(
+            long id, JsonPatchDocument<Dish> patchDoc)
+        {
+            Dish? dish = await _context.Dishes.FindAsync(id);
+
+            if (dish != null)
+            {
+                bool result = true;
+                patchDoc.ApplyTo(dish, (error) => result = false);
+                if (!result)
+                {
+                    return false;
+                }
+
+            }
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> PatchDishImageByIdAsync(long id, IFormFile file)
+        {
+            Dish? dish = await _context.Dishes
+                .Where(d => d.Id == id)
+                .Include(d => d.Image)
+                .FirstOrDefaultAsync();
+
+            if (dish != null && file != null)
+            {
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+
+                    dish.Image!.BitMap = stream.ToArray();
+                    dish.Image!.ContentType = file.ContentType;
+                }
+            }
+            return await _context.SaveChangesAsync() > 0;
         }
 
         private IQueryable<Dish> SelectByPagingInfo(

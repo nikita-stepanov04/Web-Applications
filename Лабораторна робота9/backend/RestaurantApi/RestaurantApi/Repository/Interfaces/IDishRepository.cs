@@ -1,4 +1,5 @@
-﻿using RestaurantApi.Models.BindingTargets;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using RestaurantApi.Models.BindingTargets;
 using RestaurantApi.Models.DishModels;
 
 namespace RestaurantApi.Repository.Interfaces
@@ -8,9 +9,14 @@ namespace RestaurantApi.Repository.Interfaces
         IQueryable<Dish> Dishes { get; }
 
         Task<bool> AddDishAsync(Dish d);
+
         Task<bool> DeleteDishAsync(Dish d);
 
-        Task<Dish?> GetDishById(long id);
+        Task<bool> PatchDishByIdAsync(long id, JsonPatchDocument<Dish> patchDoc);
+
+        Task<bool> PatchDishImageByIdAsync(long id, IFormFile image);
+
+        Task<Dish?> GetDishByIdAsync(long id);
 
         Task<string?> GetDishDescriptionById(long id);
 

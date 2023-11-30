@@ -1,17 +1,27 @@
 ﻿using RestaurantApi.Models.DishModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace RestaurantApi.Models.BindingTargets
 {
-    public class DishBindingTarget
+    public class DishFormData
     {
-        public long Id { get; set; }
-        public string? Name { get; set; }
-        public string? Description { get; set; }
-        public long? DishTypeId { get; set; }
-        public DishType? DishType { get; set; }
-        public decimal Price { get; set; }
+        [Required]
         public IFormFile? Image { get; set; }
-        public string? ImageUrl { get; set; }
+
+        [Required]
+        [StringLength(30)]
+        public string? Name { get; set; }
+
+        [Required]
+        [StringLength(512)]
+        public string? Description { get; set; }
+
+        [Required]
+        public long DishTypeId { get; set; }
+
+        [Required]
+        [Range(0.01, double.MaxValue)]
+        public decimal Price { get; set; }
 
         public Dish ToDish() =>
             new Dish()
