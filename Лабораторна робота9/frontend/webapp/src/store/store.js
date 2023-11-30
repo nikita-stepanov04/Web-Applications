@@ -120,6 +120,7 @@ export default createStore({
 
         async logout({commit}) {
             commit('clearUser');
+            commit('clearCart');
             try {
                 await request.get('auth/logout', {}, true);
             } catch (error) {

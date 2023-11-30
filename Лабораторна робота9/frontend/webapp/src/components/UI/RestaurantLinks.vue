@@ -60,8 +60,8 @@ export default {
     }
   },
   async created() {
-    this.admin = this.$store.state.userAuthenticationRole
-        ?? await this.$store.dispatch('checkUserAuthorization') === 'Admin';
+    this.admin = (this.$store.state.userAuthenticationRole
+        ?? await this.$store.dispatch('checkUserAuthorization')) === 'Admin';
   }
 }
 </script>

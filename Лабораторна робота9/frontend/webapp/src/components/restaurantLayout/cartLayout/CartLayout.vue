@@ -2,7 +2,7 @@
   <confirmation-modal
       :modal-type="'delete'"
       :item-to-confirm="itemToRemoveName"
-      @confirmation="remove">
+      @confirmationDelete="remove">
   </confirmation-modal>
 
   <h3 class="text-center my-2">My orders</h3>
