@@ -1,5 +1,5 @@
 <template>
-  <h3 class="text-center mb-4">Edit dish</h3>
+  <h3 class="text-center mb-4">Add dish</h3>
   <div class="container">
     <form @submit.prevent="submitChange"
           ref="regForm"
@@ -72,7 +72,7 @@
                   <input class="form-control"
                          v-model="dish.price"
                          id="price"
-                         type="text" pattern="[0-9]*[.,]?[0-9]+"
+                         type="text" pattern="[0-9]*[,]?[0-9]+"
                          min="0"
                          required
                   >

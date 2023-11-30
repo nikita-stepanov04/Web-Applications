@@ -98,7 +98,7 @@ export default {
         await request.get(
             'orders/complete/' + id, {}, true);
         this.orders = this.orders.filter(o => o.id !== id);
-        this.alertSuccess('Successfully removed order with id:' + id)
+        this.alertSuccess('Successfully completed order with id:' + id)
       } catch (error) {
         this.alertDanger('Failed to remove order with id: ' + id);
       }

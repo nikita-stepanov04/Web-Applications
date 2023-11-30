@@ -70,7 +70,7 @@
                   <input class="form-control"
                          v-model="dish.price"
                          id="price"
-                         type="text" pattern="[0-9]*[.,]?[0-9]+"
+                         type="text" pattern="[0-9]*[.]?[0-9]+"
                          min="0"
                          required
                   >

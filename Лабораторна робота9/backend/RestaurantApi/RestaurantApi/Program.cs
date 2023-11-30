@@ -35,6 +35,7 @@ namespace RestaurantApi
             builder.Services.AddScoped<IImageRepository, EfImageRepository>();           
             builder.Services.AddScoped<IOrderRepository, EFOrderRepository>();
             builder.Services.AddScoped<IScheduleRepository, EfScheduleRepository>();
+            builder.Services.AddScoped<IStatsRepository, EFStatsRepository>();
 
             builder.Services.AddControllers()
                 .AddNewtonsoftJson(opts =>
