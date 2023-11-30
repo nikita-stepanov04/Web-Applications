@@ -33,7 +33,7 @@
                class="nav-link active">DishTypes</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/admin/edit-shedule"
+            <router-link to="/admin/schedule/edit"
                class="nav-link active">Schedule</router-link>
           </li>
           <li class="nav-item">

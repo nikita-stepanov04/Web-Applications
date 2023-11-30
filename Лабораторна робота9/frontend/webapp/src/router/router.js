@@ -15,6 +15,7 @@ import AdminDishesPage from "@/pages/adminPages/AdminDishesPage.vue";
 import AdminEditDishesPage from "@/pages/adminPages/AdminEditDishesPage.vue";
 import AdminAddDishPage from "@/pages/adminPages/AdminAddDishPage.vue";
 import AdminEditDishTypesPage from "@/pages/adminPages/AdminEditDishTypesPage.vue";
+import AdminEditSchedulePage from "@/pages/adminPages/AdminEditSchedulePage.vue";
 
 const routes = [
     {
@@ -146,6 +147,15 @@ const routes = [
         component: AdminEditDishTypesPage,
         meta: {
             title: 'Edit dish types',
+            authRequired: true,
+            adminPage: true
+        }
+    },
+    {
+        path: '/admin/schedule/edit',
+        component: AdminEditSchedulePage,
+        meta: {
+            title: 'Edit schedule',
             authRequired: true,
             adminPage: true
         }

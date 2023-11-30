@@ -8,7 +8,6 @@ using RestaurantApi.Models.BindingTargets;
 using RestaurantApi.Models.DishModels;
 using RestaurantApi.Models.IdentityContext;
 using RestaurantApi.Repository.Interfaces;
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
 namespace RestaurantApi.Controllers
@@ -48,9 +47,9 @@ namespace RestaurantApi.Controllers
             dishes = substring == null
                 ? await _dishRepository.GetDishesByTypeAsync(type, pagInfo)
                 : await _dishRepository.GetDishesBySubstringAsync(substring, pagInfo);
-            
+
             var dishBindingTargets = dishes.Select(d => ToDishBindingTarget(d));
-            
+
             pagInfo.TotalPages = await
                 _dishRepository.GetTotalPagesAsync(type, substring, pagInfo);
 
@@ -81,7 +80,7 @@ namespace RestaurantApi.Controllers
             return dishDescripiton != null
                 ? Ok(dishDescripiton)
                 : NotFound($"Dish with id: {id} was not found");
-        }        
+        }
 
         [HttpGet("image/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -90,7 +89,7 @@ namespace RestaurantApi.Controllers
         {
             Image? image = await _imageRepository.GetImageByIdAsync(id);
             if (image != null)
-            {                
+            {
                 return File(image.BitMap!, image.ContentType!);
             }
             return NotFound($"Image with id: {id} was not found");
@@ -149,8 +148,6 @@ namespace RestaurantApi.Controllers
         public async Task<IActionResult> AddDish(
             [FromForm] DishFormData data)
         {
-            await Console.Out.WriteLineAsync($"\n\n{JsonSerializer.Serialize(data)}\n\n");
-
             IFormFile? image = data.Image;
             Dish dish = data.ToDish();
             DishType? type = await _dishTypesRepository.DishTypes
@@ -170,14 +167,38 @@ namespace RestaurantApi.Controllers
                     };
                 }
             }
-
-            await Console.Out.WriteLineAsync($"\n\n{JsonSerializer.Serialize(dish)}\n\n");
-
             return await _dishRepository.AddDishAsync(dish)
                 ? Ok()
                 : BadRequest();
         }
 
+        [Authorize(Roles = UserRoles.Admin)]
+        [HttpDelete("delete/dish-type/{id:long}")]
+        public async Task<IActionResult> DeleteDishType(long id)
+        {
+            return await _dishTypesRepository.DeleteDishType(id)
+                ? Ok()
+                : NotFound($"Dish type with id: {id} was not found");
+        }
+
+        [Authorize(Roles = UserRoles.Admin)]
+        [HttpPost("add/dish-type")]
+        public async Task<IActionResult> AddDishType([FromBody] string name)
+        {
+            return await _dishTypesRepository.AddDishType(name)
+                ? Ok()
+                : BadRequest();
+        }
+
+        [Authorize(Roles = UserRoles.Admin)]
+        [HttpPatch("patch/dish-types")]
+        public async Task<IActionResult> PatchDishTypes(
+            JsonPatchDocument<List<DishType>> patchDoc)
+        {
+            return await _dishTypesRepository.PatchDishTypes(patchDoc)
+                ? Ok()
+                : BadRequest();
+        }
 
 
         private DishBindingTarget ToDishBindingTarget(Dish dish)
@@ -189,7 +210,7 @@ namespace RestaurantApi.Controllers
                 Name = dish.Name,
                 Price = dish.Price,
                 Description = dish.Description,
-                DishTypeId = dish.DishTypeId,                
+                DishTypeId = dish.DishTypeId,
                 ImageUrl = helper.Action(
                         controller: "Dish",
                         action: "GetImage",
@@ -200,5 +221,5 @@ namespace RestaurantApi.Controllers
         }
     }
 
-    
+
 }

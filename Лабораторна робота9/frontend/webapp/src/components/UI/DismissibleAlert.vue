@@ -1,9 +1,9 @@
 <template>
   <transition>
     <div ref="liveAlertPlaceholder" class="live-alert-container" v-if="showAlert">
-      <div class="container">
-        <div class="row">
-          <div class="col-6 offset-3 mt-3">
+      <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-6 mt-3">
             <div :class="['alert', alertType, 'alert-dismissible']" role="alert">
               <div>{{message}}</div>
               <button

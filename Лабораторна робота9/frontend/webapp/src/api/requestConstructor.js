@@ -8,9 +8,10 @@ export default {
             withCredentials: withCredentials
         });
     },
-    async post(path, body, withCredentials) {
+    async post(path, body, withCredentials, headers) {
         return axios.post(this.url + path, body, {
-            withCredentials: withCredentials
+            withCredentials: withCredentials,
+            headers: headers
         })
     },
     async put(path, body, withCredentials) {

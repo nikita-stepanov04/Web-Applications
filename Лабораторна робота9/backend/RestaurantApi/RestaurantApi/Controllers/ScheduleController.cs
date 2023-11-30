@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using RestaurantApi.Models.IdentityContext;
 using RestaurantApi.Models.SheduleModels;
 using RestaurantApi.Repository.Interfaces;
 
@@ -20,6 +23,16 @@ namespace RestaurantApi.Controllers
             return schedule != null
                 ? Ok(schedule)
                 : NotFound();
+        }
+
+        [Authorize(Roles = UserRoles.Admin)]
+        [HttpPatch]
+        public async Task<IActionResult> PatchSchedule(
+            JsonPatchDocument<Schedule> patchDoc)
+        {
+            return await _scheduleRepository.PatchSchedule(patchDoc)
+                ? Ok()
+                : BadRequest();
         }
     }
 }

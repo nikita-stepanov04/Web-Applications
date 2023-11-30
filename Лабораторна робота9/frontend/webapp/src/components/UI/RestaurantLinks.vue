@@ -59,9 +59,9 @@ export default {
       admin: false
     }
   },
-  created() {
-    this.admin = (this.$store.state.userAuthenticationRole
-        ?? this.$store.dispatch('checkUserAuthorization')) === 'Admin';
+  async created() {
+    this.admin = this.$store.state.userAuthenticationRole
+        ?? await this.$store.dispatch('checkUserAuthorization') === 'Admin';
   }
 }
 </script>
